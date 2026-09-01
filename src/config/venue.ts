@@ -14,9 +14,13 @@ export interface VenueFeatures {
   merch: boolean;
   parking: boolean;
   jobs: boolean;
+  bookings: boolean;
 }
 
 export interface VenueConfig {
+  eventsBooking: {
+    description: string;
+  };
   name: string;
   shortName: string;
   tagline: string;
@@ -77,6 +81,10 @@ export const venue: VenueConfig = {
     merch: true,
     parking: true,
     jobs: true,
+    bookings: true
+  },
+  eventsBooking: {
+    description: "Book your next event at ONYX. World-class entertainers, VIP tables, and a full kitchen for an unforgettable experience.",
   },
 };
 

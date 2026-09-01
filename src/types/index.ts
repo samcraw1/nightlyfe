@@ -24,6 +24,13 @@ export interface Entertainer {
     twitter?: string;
     tiktok?: string;
   };
+  dimensions?: {
+    height: number;
+    bust: number;
+    waist: number;
+    hips: number;
+    credits: number;
+  }
 }
 
 export interface ClubEvent {
@@ -148,3 +155,29 @@ export interface JobRole {
   title: string;
   blurb: string;
 }
+
+interface BookingRequestBase {
+  firstName: string;
+  lastName: string;
+  company: string;
+  email: string;
+  phoneNumber: number;
+  estimatedBudget: number;
+  additionalNotes: string;
+}
+
+export interface TalentBooking extends BookingRequestBase {
+  type: "talent";
+  performanceType: string[];
+}
+
+export interface EventBooking extends BookingRequestBase {
+  type: "event";
+  eventType: string[];
+}
+
+export type BookingForm = TalentBooking | EventBooking;
+
+
+
+

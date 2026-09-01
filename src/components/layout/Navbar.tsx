@@ -13,6 +13,7 @@ const links: { href: string; label: string; feature?: keyof typeof venue.feature
   { href: "/events", label: "Events" },
   { href: "/kitchen", label: "Kitchen", feature: "kitchen" },
   { href: "/shop", label: "Shop", feature: "merch" },
+  { href: "/bookings", label: "Bookings", feature: "bookings" }
 ];
 
 export default function Navbar() {

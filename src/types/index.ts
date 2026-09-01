@@ -16,6 +16,8 @@ export interface Entertainer {
   galleryCount: number;
   /** Hue (0–360) used to generate this performer's placeholder art. */
   hue: number;
+  /** Set when this performer has a streaming room (see data/liveRooms.ts). */
+  liveRoomId?: string;
 }
 
 export interface ClubEvent {
@@ -31,12 +33,21 @@ export interface ClubEvent {
   hue: number;
 }
 
-export interface Webcam {
+/**
+ * An entertainer's personal livestream room. Joins to Entertainer via
+ * entertainerId — profile data (name, bio, hue…) is never duplicated here.
+ * streamProvider/playbackId are the integration points for a real provider
+ * (LiveKit / Mux / AWS IVS) later; "mock" renders the demo stream.
+ */
+export interface LiveRoom {
   id: string;
-  name: string;
-  live: boolean;
-  viewers: number;
-  hue: number;
+  entertainerId: string;
+  title: string;
+  isLive: boolean;
+  viewerCount: number;
+  startedAt?: string;
+  streamProvider?: "mock" | "livekit" | "mux" | "ivs";
+  playbackId?: string;
 }
 
 export interface Message {

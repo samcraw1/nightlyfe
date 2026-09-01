@@ -2,7 +2,7 @@ import Link from "next/link";
 import { venue } from "@/config/venue";
 import { entertainers } from "@/data/entertainers";
 import { events, formatEventDate } from "@/data/events";
-import { webcams } from "@/data/webcams";
+import { liveRooms } from "@/data/liveRooms";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -12,7 +12,7 @@ import EventCard from "@/components/events/EventCard";
 import { formatMoney } from "@/lib/format";
 
 const tonightCount = entertainers.filter((e) => e.workingTonight).length;
-const liveViewers = webcams.reduce((sum, c) => sum + c.viewers, 0);
+const liveViewers = liveRooms.reduce((sum, r) => sum + r.viewerCount, 0);
 const featuredEvent = events.find((e) => e.featured) ?? events[0];
 const featuredGirls = entertainers.filter((e) => e.featured);
 
@@ -36,7 +36,7 @@ interface ModuleCard {
 const modules: ModuleCard[] = [
   { href: "/girls", title: "Meet the Girls", blurb: "The full roster — see who's working tonight.", hue: 330 },
   { href: "/live", title: "Watch Live", blurb: "The main stage stream, live from the floor.", hue: 350 },
-  { href: "/webcams", title: "Webcams", blurb: "Every room in the building, one tap away.", hue: 270, feature: "webcams" },
+  { href: "/webcams", title: "Webcams", blurb: "Your favorite entertainers, streaming live.", hue: 270, feature: "webcams" },
   { href: "/messages", title: "Messages", blurb: "Talk directly with your favorite entertainers.", hue: 210, feature: "messaging" },
   { href: "/reserve", title: "Reserve a Table", blurb: "VIP sections, bottle packages, stage-side seats.", hue: 42 },
   { href: "/events", title: "Events & Parking", blurb: "Tickets, guest DJs, and pre-paid parking.", hue: 190 },

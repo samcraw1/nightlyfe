@@ -18,6 +18,7 @@ export const entertainers: Entertainer[] = [
     schedule: weekend,
     galleryCount: 6,
     hue: 210,
+    liveRoomId: "room-sapphire",
   },
   {
     id: "amber-rose",
@@ -34,6 +35,7 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 5,
     hue: 28,
+    liveRoomId: "room-amber-rose",
   },
   {
     id: "jade",
@@ -46,6 +48,7 @@ export const entertainers: Entertainer[] = [
     schedule: weekend,
     galleryCount: 7,
     hue: 150,
+    liveRoomId: "room-jade",
   },
   {
     id: "diamond",
@@ -61,6 +64,7 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 6,
     hue: 265,
+    liveRoomId: "room-diamond",
   },
   {
     id: "phoenix",
@@ -77,6 +81,7 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 4,
     hue: 12,
+    liveRoomId: "room-phoenix",
   },
   {
     id: "luna",
@@ -93,6 +98,7 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 5,
     hue: 230,
+    liveRoomId: "room-luna",
   },
   {
     id: "royalty",
@@ -124,6 +130,7 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 4,
     hue: 330,
+    liveRoomId: "room-candy",
   },
   {
     id: "raven",
@@ -151,6 +158,7 @@ export const entertainers: Entertainer[] = [
     schedule: weekend,
     galleryCount: 8,
     hue: 40,
+    liveRoomId: "room-goldie",
   },
 ];
 

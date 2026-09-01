@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import { venue } from "@/config/venue";
-import { webcams } from "@/data/webcams";
-import { entertainers } from "@/data/entertainers";
+import { liveRooms } from "@/data/liveRooms";
+import { entertainers, getEntertainer } from "@/data/entertainers";
 import LivePlayer from "@/components/live/LivePlayer";
 import LiveChat from "@/components/live/LiveChat";
 import Button from "@/components/ui/Button";
 import PageHeader from "@/components/ui/PageHeader";
-import WebcamCard from "@/components/live/WebcamCard";
+import LiveRoomCard from "@/components/live/LiveRoomCard";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 export const metadata: Metadata = { title: "Live" };
 
+// The official venue stream — separate from entertainer rooms in /webcams.
+const venueStream = { live: true, viewers: 1284, hue: 42 };
+
 export default function LivePage() {
-  const mainCam = webcams[0];
   const tonight = entertainers.filter((e) => e.workingTonight);
 
   return (
@@ -28,9 +30,9 @@ export default function LivePage() {
           <LivePlayer
             title="Main Stage — Saturday Night Live Set"
             subtitle={`DJ Smooth · ${tonight.length} entertainers on tonight`}
-            live={mainCam.live}
-            viewers={mainCam.viewers}
-            hue={mainCam.hue}
+            live={venueStream.live}
+            viewers={venueStream.viewers}
+            hue={venueStream.hue}
           />
 
           <div className="glass flex flex-wrap items-center justify-between gap-4 rounded-3xl p-5">
@@ -60,14 +62,20 @@ export default function LivePage() {
       {venue.features.webcams ? (
         <section className="mt-16">
           <SectionHeader
-            eyebrow="More angles"
-            title="Around the Building"
+            eyebrow="The girls, streaming"
+            title="Live Entertainer Rooms"
             href="/webcams"
           />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {webcams.slice(1, 4).map((cam) => (
-              <WebcamCard key={cam.id} cam={cam} />
-            ))}
+            {liveRooms
+              .filter((r) => r.isLive)
+              .slice(0, 3)
+              .map((room) => {
+                const girl = getEntertainer(room.entertainerId);
+                return girl ? (
+                  <LiveRoomCard key={room.id} room={room} girl={girl} />
+                ) : null;
+              })}
           </div>
         </section>
       ) : null}

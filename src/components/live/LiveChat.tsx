@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { newId } from "@/lib/format";
 
-interface ChatMessage {
+export interface ChatMessage {
   id: string;
   user: string;
   text: string;
   self?: boolean;
+  /** Tip announcements render as gold system lines. */
+  isTip?: boolean;
 }
 
 const seed: ChatMessage[] = [
@@ -26,11 +28,28 @@ const ambient: Omit<ChatMessage, "id">[] = [
   { user: "peachtree404", text: "front row is the only row" },
 ];
 
+interface LiveChatProps {
+  className?: string;
+  /**
+   * Externally injected messages (e.g. tip announcements from the room
+   * page). New entries are appended to the feed as they arrive.
+   */
+  events?: ChatMessage[];
+}
+
 /** Lightweight demo chat — messages are local only. */
-export default function LiveChat({ className = "" }: { className?: string }) {
+export default function LiveChat({ className = "", events }: LiveChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(seed);
   const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const seenEvents = useRef(0);
+
+  useEffect(() => {
+    if (!events || events.length <= seenEvents.current) return;
+    const fresh = events.slice(seenEvents.current);
+    seenEvents.current = events.length;
+    setMessages((prev) => [...prev, ...fresh]);
+  }, [events]);
 
   useEffect(() => {
     let i = 0;
@@ -67,18 +86,27 @@ export default function LiveChat({ className = "" }: { className?: string }) {
         ref={scrollRef}
         className="flex-1 space-y-2.5 overflow-y-auto px-5 py-4"
       >
-        {messages.map((m) => (
-          <p key={m.id} className="text-xs leading-relaxed">
-            <span
-              className={`mr-1.5 font-bold ${
-                m.self ? "text-gold" : "text-bone/50"
-              }`}
+        {messages.map((m) =>
+          m.isTip ? (
+            <p
+              key={m.id}
+              className="rounded-xl border border-gold/30 bg-gold/10 px-3 py-1.5 text-xs font-bold text-gold"
             >
-              {m.user}
-            </span>
-            <span className="text-bone/85">{m.text}</span>
-          </p>
-        ))}
+              🥂 {m.text}
+            </p>
+          ) : (
+            <p key={m.id} className="text-xs leading-relaxed">
+              <span
+                className={`mr-1.5 font-bold ${
+                  m.self ? "text-gold" : "text-bone/50"
+                }`}
+              >
+                {m.user}
+              </span>
+              <span className="text-bone/85">{m.text}</span>
+            </p>
+          )
+        )}
       </div>
       <div className="flex gap-2 border-t border-white/5 p-3">
         <input

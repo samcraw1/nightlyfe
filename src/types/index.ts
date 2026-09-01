@@ -131,13 +131,21 @@ export interface TicketOrder {
 
 export type MenuCategory = "Wings" | "Burgers" | "Entrees" | "Sides" | "Drinks";
 
+/** Portion option for a menu item — overrides the base price when chosen. */
+export interface MenuItemSize {
+  label: string;
+  price: number;
+}
+
 export interface MenuItem {
   id: string;
   name: string;
   description: string;
+  /** Base price; when `sizes` exist this matches the default portion. */
   price: number;
   category: MenuCategory;
   hue: number;
+  sizes?: MenuItemSize[];
 }
 
 export interface Product {
@@ -147,6 +155,8 @@ export interface Product {
   price: number;
   category: "Shirts" | "Hats" | "Hoodies";
   hue: number;
+  /** Every size sells at the same price. */
+  sizes: string[];
 }
 
 export interface CreditPackage {

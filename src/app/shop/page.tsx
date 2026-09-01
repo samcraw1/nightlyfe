@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { products } from "@/data/shop";
 import { venue } from "@/config/venue";
+import type { Product } from "@/types";
 import PageHeader from "@/components/ui/PageHeader";
 import ProductCard from "@/components/shop/ProductCard";
+import ProductModal from "@/components/shop/ProductModal";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import { formatMoney } from "@/lib/format";
+import { parseCartId } from "@/lib/cart";
 import { useApp } from "@/lib/store";
 
 /**
@@ -18,12 +21,16 @@ export default function ShopPage() {
   const { cart, removeFromCart, hydrated } = useApp();
   const [cartOpen, setCartOpen] = useState(false);
   const [ordered, setOrdered] = useState<number | null>(null);
+  const [selected, setSelected] = useState<Product | null>(null);
 
   // The cart is shared with the Kitchen — resolve ids through the products
   // list and drop anything that isn't merch, mirroring the Kitchen page.
   const cartDetails = hydrated
     ? cart
-        .map((c) => ({ ...c, product: products.find((p) => p.id === c.id) }))
+        .map((c) => {
+          const { itemId, size } = parseCartId(c.id);
+          return { ...c, size, product: products.find((p) => p.id === itemId) };
+        })
         .filter((c) => c.product)
     : [];
   const cartCount = cartDetails.reduce((sum, c) => sum + c.qty, 0);
@@ -64,7 +71,7 @@ export default function ShopPage() {
       />
       <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
         {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+          <ProductCard key={p.id} product={p} onSelect={setSelected} />
         ))}
       </div>
       <p className="mt-8 text-center text-xs text-muted">
@@ -89,6 +96,15 @@ export default function ShopPage() {
             </span>
           </button>
         </div>
+      ) : null}
+
+      {/* product detail / size chooser */}
+      {selected ? (
+        <ProductModal
+          key={selected.id}
+          product={selected}
+          onClose={() => setSelected(null)}
+        />
       ) : null}
 
       {/* cart modal */}
@@ -131,6 +147,7 @@ export default function ShopPage() {
                 <div key={c.id} className="flex justify-between text-sm">
                   <span className="text-bone/85">
                     {c.qty}× {c.product!.name}
+                    {c.size ? ` · ${c.size}` : ""}
                   </span>
                   <span className="font-semibold text-gold">
                     {formatMoney(c.qty * c.product!.price)}

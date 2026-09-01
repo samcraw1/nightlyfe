@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { menuCategories, menuItems, getMenuItem } from "@/data/menu";
-import type { MenuCategory } from "@/types";
+import type { MenuCategory, MenuItem } from "@/types";
 import PageHeader from "@/components/ui/PageHeader";
 import MenuItemCard from "@/components/kitchen/MenuItemCard";
+import MenuItemModal from "@/components/kitchen/MenuItemModal";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import { formatMoney } from "@/lib/format";
+import { parseCartId } from "@/lib/cart";
 import { useApp } from "@/lib/store";
 
 export default function KitchenPage() {
@@ -15,18 +17,24 @@ export default function KitchenPage() {
   const [category, setCategory] = useState<MenuCategory>("Wings");
   const [cartOpen, setCartOpen] = useState(false);
   const [ordered, setOrdered] = useState<number | null>(null);
+  const [selected, setSelected] = useState<MenuItem | null>(null);
 
   const items = menuItems.filter((m) => m.category === category);
   const cartDetails = hydrated
     ? cart
-        .map((c) => ({ ...c, item: getMenuItem(c.id) }))
+        .map((c) => {
+          const { itemId, size } = parseCartId(c.id);
+          const item = getMenuItem(itemId);
+          const price =
+            item?.sizes?.find((s) => s.label === size)?.price ??
+            item?.price ??
+            0;
+          return { ...c, size, item, price };
+        })
         .filter((c) => c.item)
     : [];
   const cartCount = cartDetails.reduce((sum, c) => sum + c.qty, 0);
-  const cartTotal = cartDetails.reduce(
-    (sum, c) => sum + c.qty * (c.item?.price ?? 0),
-    0
-  );
+  const cartTotal = cartDetails.reduce((sum, c) => sum + c.qty * c.price, 0);
 
   const checkout = () => {
     setOrdered(cartTotal);
@@ -59,9 +67,18 @@ export default function KitchenPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {items.map((item) => (
-          <MenuItemCard key={item.id} item={item} />
+          <MenuItemCard key={item.id} item={item} onSelect={setSelected} />
         ))}
       </div>
+
+      {/* item detail / portion chooser */}
+      {selected ? (
+        <MenuItemModal
+          key={selected.id}
+          item={selected}
+          onClose={() => setSelected(null)}
+        />
+      ) : null}
 
       {/* floating cart bar */}
       {cartCount > 0 ? (
@@ -120,9 +137,10 @@ export default function KitchenPage() {
                 <div key={c.id} className="flex justify-between text-sm">
                   <span className="text-bone/85">
                     {c.qty}× {c.item!.name}
+                    {c.size ? ` · ${c.size}` : ""}
                   </span>
                   <span className="font-semibold text-gold">
-                    {formatMoney(c.qty * c.item!.price)}
+                    {formatMoney(c.qty * c.price)}
                   </span>
                 </div>
               ))}

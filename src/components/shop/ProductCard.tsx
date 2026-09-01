@@ -4,14 +4,37 @@ import type { Product } from "@/types";
 import MockImage from "@/components/ui/MockImage";
 import Badge from "@/components/ui/Badge";
 import { formatMoney } from "@/lib/format";
+import { parseCartId } from "@/lib/cart";
 import { useApp } from "@/lib/store";
 
-export default function ProductCard({ product }: { product: Product }) {
-  const { cart, addToCart, removeFromCart, hydrated } = useApp();
-  const qty = hydrated ? cart.find((c) => c.id === product.id)?.qty ?? 0 : 0;
+export default function ProductCard({
+  product,
+  onSelect,
+}: {
+  product: Product;
+  onSelect: (product: Product) => void;
+}) {
+  const { cart, hydrated } = useApp();
+  const qty = hydrated
+    ? cart
+        .filter((c) => parseCartId(c.id).itemId === product.id)
+        .reduce((sum, c) => sum + c.qty, 0)
+    : 0;
 
   return (
-    <article className="glass group overflow-hidden rounded-3xl transition hover:border-gold/40">
+    <article
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${product.name}`}
+      onClick={() => onSelect(product)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect(product);
+        }
+      }}
+      className="glass group cursor-pointer overflow-hidden rounded-3xl transition hover:border-gold/40 focus-visible:border-gold/60 focus-visible:outline-none"
+    >
       <MockImage
         hue={product.hue}
         label={product.name}
@@ -20,6 +43,14 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="absolute left-3 top-3">
           <Badge variant="muted">{product.category}</Badge>
         </div>
+        {qty > 0 ? (
+          <span
+            suppressHydrationWarning
+            className="absolute right-3 top-3 flex h-6 min-w-6 items-center justify-center rounded-full bg-gradient-to-b from-gold-bright via-gold to-gold-deep px-1.5 text-xs font-bold text-ink"
+          >
+            {qty}
+          </span>
+        ) : null}
       </MockImage>
       <div className="p-4">
         <h3 className="text-sm font-bold text-bone">{product.name}</h3>
@@ -30,36 +61,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="font-display text-xl text-gold">
             {formatMoney(product.price)}
           </span>
-          <div className="flex items-center gap-2">
-            {qty > 0 ? (
-              <>
-                <button
-                  onClick={() => removeFromCart(product.id)}
-                  aria-label={`Remove one ${product.name}`}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition hover:bg-gold/10"
-                >
-                  −
-                </button>
-                <span
-                  suppressHydrationWarning
-                  className="w-5 text-center text-sm font-bold text-bone"
-                >
-                  {qty}
-                </span>
-              </>
-            ) : null}
-            <button
-              onClick={() => addToCart(product.id)}
-              aria-label={`Add ${product.name} to cart`}
-              className={`flex h-8 items-center justify-center rounded-full text-[11px] font-bold uppercase tracking-wider transition ${
-                qty > 0
-                  ? "w-8 border border-gold/40 text-gold hover:bg-gold/10"
-                  : "bg-gradient-to-b from-gold-bright via-gold to-gold-deep px-4 text-ink hover:brightness-110"
-              }`}
-            >
-              {qty > 0 ? "+" : "Add"}
-            </button>
-          </div>
+          <span className="flex h-8 items-center justify-center rounded-full bg-gradient-to-b from-gold-bright via-gold to-gold-deep px-4 text-[11px] font-bold uppercase tracking-wider text-ink transition group-hover:brightness-110">
+            Add
+          </span>
         </div>
       </div>
     </article>

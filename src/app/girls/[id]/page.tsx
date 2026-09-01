@@ -88,20 +88,22 @@ export default async function GirlProfilePage({
           </div>
 
           <aside className="space-y-6">
-            <section className="glass rounded-3xl p-6">
-              <p className="eyebrow mb-4">Schedule</p>
-              <ul className="space-y-2.5 text-sm">
-                {girl.schedule.map((s) => (
-                  <li
-                    key={s.day}
-                    className="flex justify-between border-b border-white/5 pb-2.5 last:border-0 last:pb-0"
-                  >
-                    <span className="text-bone/80">{s.day}</span>
-                    <span className="font-semibold text-gold">{s.hours}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {girl.schedule?.length ? (
+              <section className="glass rounded-3xl p-6">
+                <p className="eyebrow mb-4">Schedule</p>
+                <ul className="space-y-2.5 text-sm">
+                  {girl.schedule?.map((s) => (
+                    <li
+                      key={s.day}
+                      className="flex justify-between border-b border-white/5 pb-2.5 last:border-0 last:pb-0"
+                    >
+                      <span className="text-bone/80">{s.day}</span>
+                      <span className="font-semibold text-gold">{s.hours}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             <section className="glass relative overflow-hidden rounded-3xl p-6 text-center">
               <div

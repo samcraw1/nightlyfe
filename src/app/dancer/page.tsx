@@ -103,20 +103,22 @@ export default function DancerDashboardPage() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* schedule */}
-        <section className="glass rounded-3xl p-6">
-          <p className="eyebrow mb-4">Your schedule</p>
-          <ul className="space-y-2.5 text-sm">
-            {girl.schedule.map((s) => (
-              <li
-                key={s.day}
-                className="flex justify-between border-b border-white/5 pb-2.5 last:border-0 last:pb-0"
-              >
-                <span className="text-bone/80">{s.day}</span>
-                <span className="font-semibold text-gold">{s.hours}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {girl.schedule?.length ? (
+          <section className="glass rounded-3xl p-6">
+            <p className="eyebrow mb-4">Your schedule</p>
+            <ul className="space-y-2.5 text-sm">
+              {girl.schedule?.map((s) => (
+                <li
+                  key={s.day}
+                  className="flex justify-between border-b border-white/5 pb-2.5 last:border-0 last:pb-0"
+                >
+                  <span className="text-bone/80">{s.day}</span>
+                  <span className="font-semibold text-gold">{s.hours}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {/* settings */}
         <section className="glass rounded-3xl p-6">

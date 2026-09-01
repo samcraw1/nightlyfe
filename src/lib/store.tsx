@@ -16,7 +16,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { LiveRoom, Message, Reservation, TicketOrder } from "@/types";
+import type { BookingForm, LiveRoom, Message, Reservation, TicketOrder } from "@/types";
 import { seedMessages, STARTING_CREDITS } from "@/data/messages";
 import { liveRooms as seedLiveRooms } from "@/data/liveRooms";
 
@@ -38,6 +38,7 @@ interface AppState {
   reservations: Reservation[];
   ticketOrders: TicketOrder[];
   cart: CartItem[];
+  bookingRequests: BookingForm[];
   /** Seed rooms merged with any runtime overrides (a dancer going live). */
   liveRooms: LiveRoom[];
   /** Mock credits earned by the logged-in dancer (tips received). */
@@ -60,6 +61,7 @@ interface AppState {
   addMessage: (message: Message) => void;
   addReservation: (reservation: Reservation) => void;
   addTicketOrder: (order: TicketOrder) => void;
+  addBookingRequest: (booking: BookingForm) => void;
   addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -76,6 +78,7 @@ interface PersistedState {
   reservations: Reservation[];
   ticketOrders: TicketOrder[];
   cart: CartItem[];
+  bookingRequests: BookingForm[];
   roomOverrides?: Record<string, RoomOverride>;
   dancerEarnings?: number;
 }
@@ -97,6 +100,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [ticketOrders, setTicketOrders] = useState<TicketOrder[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [bookingRequests, setBookingRequests] = useState<BookingForm[]>([]);
   const [roomOverrides, setRoomOverrides] = useState<
     Record<string, RoomOverride>
   >({});
@@ -116,6 +120,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setReservations(saved.reservations);
       setTicketOrders(saved.ticketOrders);
       setCart(saved.cart);
+      setBookingRequests(saved.bookingRequests ?? []);
       setRoomOverrides(saved.roomOverrides ?? {});
       setDancerEarnings(saved.dancerEarnings ?? 0);
     }
@@ -133,6 +138,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         reservations,
         ticketOrders,
         cart,
+        bookingRequests,
         roomOverrides,
         dancerEarnings,
       };
@@ -140,7 +146,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } catch {
       // storage unavailable (private mode) — demo state just won't persist
     }
-  }, [hydrated, credits, favorites, userMessages, reservations, ticketOrders, cart, roomOverrides, dancerEarnings]);
+  }, [hydrated, credits, favorites, userMessages, reservations, ticketOrders, cart, bookingRequests, roomOverrides, dancerEarnings]);
 
   const toggleFavorite = useCallback((id: string) => {
     setFavorites((prev) =>
@@ -176,6 +182,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addTicketOrder = useCallback((order: TicketOrder) => {
     setTicketOrders((prev) => [...prev, order]);
+  }, []);
+
+  const addBookingRequest = useCallback((booking: BookingForm) => {
+    setBookingRequests((prev) => [...prev, booking]);
   }, []);
 
   const addToCart = useCallback((id: string) => {
@@ -247,6 +257,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       reservations,
       ticketOrders,
       cart,
+      bookingRequests,
       liveRooms,
       dancerEarnings,
       buyCreditsOpen,
@@ -261,6 +272,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       addMessage,
       addReservation,
       addTicketOrder,
+      addBookingRequest,
       addToCart,
       removeFromCart,
       clearCart,
@@ -273,6 +285,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       reservations,
       ticketOrders,
       cart,
+      bookingRequests,
       liveRooms,
       dancerEarnings,
       buyCreditsOpen,
@@ -286,6 +299,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       addMessage,
       addReservation,
       addTicketOrder,
+      addBookingRequest,
       addToCart,
       removeFromCart,
       clearCart,

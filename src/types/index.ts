@@ -4,14 +4,15 @@ export interface ScheduleEntry {
 }
 
 export interface Entertainer {
+  type?: "model" | "dj" | "performer"
   id: string;
   name: string;
   tagline: string;
-  bio: string;
-  workingTonight: boolean;
+  bio: string
+  workingTonight?: boolean;
   featured: boolean;
   followers: number;
-  schedule: ScheduleEntry[];
+  schedule?: ScheduleEntry[];
   /** Number of gallery placeholder images to render on the profile. */
   galleryCount: number;
   /** Hue (0–360) used to generate this performer's placeholder art. */
@@ -25,11 +26,16 @@ export interface Entertainer {
     tiktok?: string;
   };
   dimensions?: {
-    height: number;
-    bust: number;
-    waist: number;
-    hips: number;
-    credits: number;
+    height: string;
+    bust: string;
+    waist: string;
+    hips: string;
+    credits: string;
+  }
+  djSpecs?: {
+    genres: string[];
+    yearsExp: number;
+    equipment: string[];
   }
 }
 
@@ -157,6 +163,7 @@ export interface JobRole {
 }
 
 interface BookingRequestBase {
+  id: string;
   firstName: string;
   lastName: string;
   company: string;
@@ -177,6 +184,7 @@ export interface EventBooking extends BookingRequestBase {
 }
 
 export type BookingForm = TalentBooking | EventBooking;
+
 
 
 

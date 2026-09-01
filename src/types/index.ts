@@ -18,6 +18,12 @@ export interface Entertainer {
   hue: number;
   /** Set when this performer has a streaming room (see data/liveRooms.ts). */
   liveRoomId?: string;
+  /** Handles only, without the leading "@" — the UI builds the profile URL. */
+  socials?: {
+    instagram?: string;
+    twitter?: string;
+    tiktok?: string;
+  };
 }
 
 export interface ClubEvent {

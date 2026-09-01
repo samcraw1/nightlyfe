@@ -4,6 +4,7 @@ import MockImage from "@/components/ui/MockImage";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import GirlProfileActions from "@/components/girls/GirlProfileActions";
+import SocialLinks from "@/components/girls/SocialLinks";
 import { formatCount } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -58,6 +59,7 @@ export default async function GirlProfilePage({
           <p className="mt-1 text-xs uppercase tracking-wider text-muted">
             {formatCount(girl.followers)} followers
           </p>
+          <SocialLinks socials={girl.socials} name={girl.name} className="mt-4" />
           <div className="mt-6">
             <GirlProfileActions girl={girl} />
           </div>
@@ -123,6 +125,27 @@ export default async function GirlProfilePage({
                 </Button>
               </div>
             </section>
+            {girl.socials ? (
+              <section className="glass relative overflow-hidden rounded-3xl p-6">
+                <div
+                  className="absolute inset-0 opacity-50"
+                  style={{
+                    background:
+                      "radial-gradient(80% 100% at 50% 0%, rgba(212,169,78,0.15), transparent 70%)",
+                  }}
+                />
+                <div className="relative">
+                  <p className="mb-4 font-display text-lg text-bone">
+                    Follow {girl.name}
+                  </p>
+                  <SocialLinks
+                    socials={girl.socials}
+                    name={girl.name}
+                    orientation="vertical"
+                  />
+                </div>
+              </section>
+            ) : null}
           </aside>
         </div>
       </div>

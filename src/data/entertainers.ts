@@ -19,6 +19,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 6,
     hue: 210,
     liveRoomId: "room-sapphire",
+    socials: {
+      instagram: "sapphire_insta",
+      twitter: "sapphire_twitter",
+      tiktok: "sapphire_tiktok",
+    },
   },
   {
     id: "amber-rose",
@@ -36,6 +41,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 5,
     hue: 28,
     liveRoomId: "room-amber-rose",
+    socials: {
+      instagram: "amber_rose_insta",
+      twitter: "amber_rose_twitter",
+      tiktok: "amber_rose_tiktok",
+    },
   },
   {
     id: "jade",
@@ -49,6 +59,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 7,
     hue: 150,
     liveRoomId: "room-jade",
+    socials: {
+      instagram: "jade_insta",
+      twitter: "jade_twitter",
+      tiktok: "jade_tiktok",
+    },
   },
   {
     id: "diamond",
@@ -65,6 +80,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 6,
     hue: 265,
     liveRoomId: "room-diamond",
+    socials: {
+      instagram: "diamond_insta",
+      twitter: "diamond_twitter",
+      tiktok: "diamond_tiktok",
+    },
   },
   {
     id: "phoenix",
@@ -82,6 +102,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 4,
     hue: 12,
     liveRoomId: "room-phoenix",
+    socials: {
+      instagram: "phoenix_insta",
+      twitter: "phoenix_twitter",
+      tiktok: "phoenix_tiktok",
+    },
   },
   {
     id: "luna",
@@ -99,6 +124,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 5,
     hue: 230,
     liveRoomId: "room-luna",
+    socials: {
+      instagram: "luna_insta",
+      twitter: "luna_twitter",
+      tiktok: "luna_tiktok",
+    },
   },
   {
     id: "royalty",
@@ -114,6 +144,11 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 6,
     hue: 45,
+    socials: {
+      instagram: "royalty_insta",
+      twitter: "royalty_twitter",
+      tiktok: "royalty_tiktok",
+    },
   },
   {
     id: "candy",
@@ -131,6 +166,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 4,
     hue: 330,
     liveRoomId: "room-candy",
+    socials: {
+      instagram: "candy_insta",
+      twitter: "candy_twitter",
+      tiktok: "candy_tiktok",
+    },
   },
   {
     id: "raven",
@@ -146,6 +186,11 @@ export const entertainers: Entertainer[] = [
     ],
     galleryCount: 5,
     hue: 285,
+    socials: {
+      instagram: "raven_insta",
+      twitter: "raven_twitter",
+      tiktok: "raven_tiktok",
+    },
   },
   {
     id: "goldie",
@@ -159,6 +204,11 @@ export const entertainers: Entertainer[] = [
     galleryCount: 8,
     hue: 40,
     liveRoomId: "room-goldie",
+    socials: {
+      instagram: "goldie_insta",
+      twitter: "goldie_twitter",
+      tiktok: "goldie_tiktok",
+    },
   },
 ];
 

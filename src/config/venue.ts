@@ -8,6 +8,7 @@
  */
 
 export interface VenueFeatures {
+  liveStream: boolean;
   webcams: boolean;
   messaging: boolean;
   kitchen: boolean;
@@ -75,6 +76,7 @@ export const venue: VenueConfig = {
     blood: "#c11430",
   },
   features: {
+    liveStream: false,
     webcams: true,
     messaging: true,
     kitchen: true,

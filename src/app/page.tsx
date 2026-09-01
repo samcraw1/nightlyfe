@@ -35,7 +35,7 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   { href: "/girls", title: "Meet the Girls", blurb: "The full roster — see who's working tonight.", hue: 330 },
-  { href: "/live", title: "Watch Live", blurb: "The main stage stream, live from the floor.", hue: 350 },
+  { href: "/live", title: "Watch Live", blurb: "The main stage stream, live from the floor.", hue: 350, feature: "liveStream" },
   { href: "/webcams", title: "Webcams", blurb: "Your favorite entertainers, streaming live.", hue: 270, feature: "webcams" },
   { href: "/messages", title: "Messages", blurb: "Talk directly with your favorite entertainers.", hue: 210, feature: "messaging" },
   { href: "/reserve", title: "Reserve a Table", blurb: "VIP sections, bottle packages, stage-side seats.", hue: 42 },
@@ -75,10 +75,12 @@ export default function HomePage() {
             <Button href="/girls" size="lg">
               Meet the Girls
             </Button>
-            <Button href="/live" variant="outline" size="lg">
-              <span className="pulse-live inline-block h-2 w-2 rounded-full bg-blood" />
-              Watch Live
-            </Button>
+            {venue.features.liveStream ? (
+              <Button href="/live" variant="outline" size="lg">
+                <span className="pulse-live inline-block h-2 w-2 rounded-full bg-blood" />
+                Watch Live
+              </Button>
+            ) : null}
             <Button href="/reserve" variant="ghost" size="lg">
               Reserve a Table →
             </Button>

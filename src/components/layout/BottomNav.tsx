@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { venue } from "@/config/venue";
 import { useApp } from "@/lib/store";
 import { conversations } from "@/data/messages";
 import { ChatIcon, HomeIcon, PlayIcon, SparkleIcon, UserIcon } from "./icons";
 
-const items = [
+const items: { href: string; label: string; Icon: React.ComponentType<{className?: string}>; exact?: boolean; feature?: keyof typeof venue.features }[] = [
   { href: "/", label: "Home", Icon: HomeIcon, exact: true },
   { href: "/girls", label: "Girls", Icon: SparkleIcon },
-  { href: "/live", label: "Live", Icon: PlayIcon },
+  { href: "/live", label: "Live", Icon: PlayIcon, feature: "liveStream" },
   { href: "/messages", label: "Messages", Icon: ChatIcon },
   { href: "/account", label: "Account", Icon: UserIcon },
 ];
@@ -26,7 +27,9 @@ export default function BottomNav() {
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto flex max-w-md items-stretch justify-around">
-        {items.map(({ href, label, Icon, exact }) => {
+        {items
+          .filter((i) => !i.feature || venue.features[i.feature])
+          .map(({ href, label, Icon, exact }) => {
           const active = exact
             ? pathname === href
             : pathname === href || pathname.startsWith(href + "/");

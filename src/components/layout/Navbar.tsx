@@ -8,7 +8,7 @@ import { CoinIcon, UserIcon } from "./icons";
 
 const links: { href: string; label: string; feature?: keyof typeof venue.features }[] = [
   { href: "/girls", label: "The Girls" },
-  { href: "/live", label: "Live" },
+  { href: "/live", label: "Live", feature: "liveStream" },
   { href: "/webcams", label: "Webcams", feature: "webcams" },
   { href: "/events", label: "Events" },
   { href: "/kitchen", label: "Kitchen", feature: "kitchen" },

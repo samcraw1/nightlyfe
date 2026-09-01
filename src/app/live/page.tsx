@@ -15,6 +15,16 @@ export const metadata: Metadata = { title: "Live" };
 const venueStream = { live: true, viewers: 1284, hue: 42 };
 
 export default function LivePage() {
+  if (!venue.features.liveStream) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+        <p className="font-display text-2xl text-bone">
+          The main stage stream isn't available at this venue.
+        </p>
+      </div>
+    );
+  }
+
   const tonight = entertainers.filter((e) => e.workingTonight);
 
   return (

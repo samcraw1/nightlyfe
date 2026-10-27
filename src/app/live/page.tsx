@@ -1,94 +1,51 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { venue } from "@/config/venue";
-import { liveRooms } from "@/data/liveRooms";
-import { entertainers, getEntertainer } from "@/data/entertainers";
-import LivePlayer from "@/components/live/LivePlayer";
-import LiveChat from "@/components/live/LiveChat";
-import Button from "@/components/ui/Button";
+import { events } from "@/data/events";
 import PageHeader from "@/components/ui/PageHeader";
-import LiveRoomCard from "@/components/live/LiveRoomCard";
-import SectionHeader from "@/components/ui/SectionHeader";
+import DigitalStage from "@/components/digital-stage/DigitalStage";
+import { getStageRepository } from "@/lib/digital-stage/repository";
+import { DEFAULT_VENUE_SLUG } from "@/lib/digital-stage/mode";
 
-export const metadata: Metadata = { title: "Live" };
+export const metadata: Metadata = { title: "Digital Stage" };
+export const dynamic = "force-dynamic";
 
-// The official venue stream — separate from entertainer rooms in /webcams.
-const venueStream = { live: true, viewers: 1284, hue: 42 };
-
-export default function LivePage() {
+/**
+ * The venue's Digital Stage: one shared livestream that entertainers rotate
+ * through. Replaces the old static "Live from the Floor" mock page.
+ */
+export default async function LivePage() {
   if (!venue.features.liveStream) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-        <p className="font-display text-2xl text-bone">
-          The main stage stream isn't available at this venue.
-        </p>
+        <p className="font-display text-2xl text-bone">The Digital Stage isn&apos;t available at this venue.</p>
       </div>
     );
   }
 
-  const tonight = entertainers.filter((e) => e.workingTonight);
+  const snapshot = await getStageRepository().getSnapshot(DEFAULT_VENUE_SLUG);
+  if (!snapshot) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+        <p className="font-display text-2xl text-bone">The stage isn&apos;t set up yet.</p>
+        <p className="mt-3 text-sm text-muted">
+          Supabase is configured but no venue with slug <code className="text-gold">{DEFAULT_VENUE_SLUG}</code> has a Digital Stage. See DIGITAL_STAGE_SETUP.md.
+        </p>
+        <Link href="/" className="mt-6 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-gold">← Home</Link>
+      </div>
+    );
+  }
+
+  const upcoming = [...events].sort((a, b) => a.date.localeCompare(b.date)).slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
       <PageHeader
-        eyebrow="Streaming now"
-        title="Live from the Floor"
-        description={`The ${venue.name} main stage, live every night. Full webcam grid available for every room in the building.`}
+        eyebrow="Digital Stage"
+        title={`Live from ${snapshot.venue.name}`}
+        description="One stage, every performer. Watch who's on right now, see who's up next, and grab a table before you head out."
       />
-
-      <div className="grid gap-6 lg:grid-cols-[1.8fr_1fr]">
-        <div className="space-y-6">
-          <LivePlayer
-            title="Main Stage — Saturday Night Live Set"
-            subtitle={`DJ Smooth · ${tonight.length} entertainers on tonight`}
-            live={venueStream.live}
-            viewers={venueStream.viewers}
-            hue={venueStream.hue}
-          />
-
-          <div className="glass flex flex-wrap items-center justify-between gap-4 rounded-3xl p-5">
-            <div>
-              <p className="font-display text-xl text-bone">
-                Tonight at {venue.name}
-              </p>
-              <p className="mt-1 text-xs text-muted">
-                {tonight.map((e) => e.name).join(" · ")}
-              </p>
-            </div>
-            <div className="flex gap-3">
-              {venue.features.webcams ? (
-                <Button href="/webcams" variant="outline">
-                  All Webcams
-                </Button>
-              ) : null}
-              <Button href="/reserve">Reserve a Table</Button>
-            </div>
-          </div>
-        </div>
-
-        {/* chat: below player on mobile, sidebar on desktop */}
-        <LiveChat className="h-96 lg:h-auto" />
-      </div>
-
-      {venue.features.webcams ? (
-        <section className="mt-16">
-          <SectionHeader
-            eyebrow="The girls, streaming"
-            title="Live Entertainer Rooms"
-            href="/webcams"
-          />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {liveRooms
-              .filter((r) => r.isLive)
-              .slice(0, 3)
-              .map((room) => {
-                const girl = getEntertainer(room.entertainerId);
-                return girl ? (
-                  <LiveRoomCard key={room.id} room={room} girl={girl} />
-                ) : null;
-              })}
-          </div>
-        </section>
-      ) : null}
+      <DigitalStage initial={snapshot} events={upcoming} visitNote={venue.digitalStage.visitNote} hours={venue.hours} phone={venue.phone} />
     </div>
   );
 }

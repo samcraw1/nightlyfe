@@ -18,7 +18,17 @@ export interface VenueFeatures {
   bookings: boolean;
 }
 
+export interface DigitalStageConfig {
+  /** Minimum age shown by the viewer age gate; null disables the gate. */
+  ageRestriction: number | null;
+  /** Shown on the stage page under the player (directions, dress code…). */
+  visitNote: string;
+}
+
 export interface VenueConfig {
+  /** URL-safe id; must match `venues.slug` in Supabase for production mode. */
+  slug: string;
+  digitalStage: DigitalStageConfig;
   eventsBooking: {
     description: string;
   };
@@ -46,6 +56,7 @@ export interface VenueConfig {
 }
 
 export const venue: VenueConfig = {
+  slug: "onyx",
   name: "ONYX",
   shortName: "ONYX",
   tagline: "Atlanta After Dark",
@@ -76,7 +87,8 @@ export const venue: VenueConfig = {
     blood: "#c11430",
   },
   features: {
-    liveStream: false,
+    // Digital Stage lives at /live; the flag gates the nav link and home card.
+    liveStream: true,
     webcams: true,
     messaging: true,
     kitchen: true,
@@ -84,6 +96,10 @@ export const venue: VenueConfig = {
     parking: true,
     jobs: true,
     bookings: true
+  },
+  digitalStage: {
+    ageRestriction: 21,
+    visitNote: "Valet on Peachtree. Dress code enforced. VIP tables include priority entry.",
   },
   eventsBooking: {
     description: "Book your next event at ONYX. World-class entertainers, VIP tables, and a full kitchen for an unforgettable experience.",

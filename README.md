@@ -29,6 +29,14 @@ src/
 public/               PWA manifest, icons, offline service worker
 ```
 
+## Digital Stage (livestreaming)
+
+`/live` is the venue's **Digital Stage**: one livestream that entertainers rotate through, run
+from the staff console at `/dashboard/digital-stage`. It runs in a labelled demo mode out of the
+box and switches to AWS IVS (video) + Supabase (state, staff auth, realtime) when credentials
+are added. See [DIGITAL_STAGE_SETUP.md](DIGITAL_STAGE_SETUP.md) for architecture, setup,
+broadcasting and compliance notes. Copy `.env.example` to `.env.local` to configure.
+
 ## What's mock
 
-Everything stateful: auth, payments/credits, streaming, messaging, reservations, and orders are demo-only (React state + localStorage). Interfaces are kept clean so each can be swapped for a real provider later.
+Everything stateful except the Digital Stage: payments/credits, individual entertainer webcam rooms (`/webcams`), messaging, reservations, and orders are demo-only (React state + localStorage). Interfaces are kept clean so each can be swapped for a real provider later.

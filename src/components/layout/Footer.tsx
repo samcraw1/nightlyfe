@@ -51,6 +51,13 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              {venue.features.adminPreview ? (
+                <li>
+                  <Link href="/admin" className="text-bone/70 transition hover:text-gold">
+                    Admin preview (demo)
+                  </Link>
+                </li>
+              ) : null}
               {venue.features.jobs ? (
                 <li>
                   <Link href="/jobs" className="text-bone/70 transition hover:text-gold">

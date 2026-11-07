@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { jobRoles } from "@/data/jobs";
+import { jobRoles as seedRoles } from "@/data/jobs";
+import { applyJobs, useClubOverrides } from "@/lib/club-overrides";
 import { venue } from "@/config/venue";
 import PageHeader from "@/components/ui/PageHeader";
 import Button from "@/components/ui/Button";
 
 export default function JobsPage() {
-  const [role, setRole] = useState(jobRoles[0].id);
+  const { overrides } = useClubOverrides();
+  const jobRoles = applyJobs(seedRoles, overrides).filter((r) => !r.closed);
+  const [role, setRole] = useState(seedRoles[0].id);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +18,7 @@ export default function JobsPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const canSubmit = name.trim() && phone.trim() && email.trim();
-  const selectedRole = jobRoles.find((r) => r.id === role)!;
+  const selectedRole = jobRoles.find((r) => r.id === role) ?? jobRoles[0] ?? seedRoles[0];
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6">

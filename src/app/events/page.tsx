@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { events } from "@/data/events";
 import { venue } from "@/config/venue";
 import PageHeader from "@/components/ui/PageHeader";
-import EventCard from "@/components/events/EventCard";
+import EventList from "@/components/events/EventList";
+import NightRail from "@/components/home/cinematic/NightRail";
 
 export const metadata: Metadata = { title: "Events" };
 
@@ -19,11 +19,12 @@ export default function EventsPage() {
             : "Guest DJs, showcases, and holiday takeovers.")
         }
       />
-      <div className="grid gap-5 md:grid-cols-2">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
+      {venue.theme.style === "cinematic" ? (
+        <div className="mb-16">
+          <NightRail />
+        </div>
+      ) : null}
+      <EventList />
     </div>
   );
 }

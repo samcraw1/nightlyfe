@@ -1,4 +1,4 @@
-import { Big_Shoulders, Bodoni_Moda, Manrope, Outfit, Yellowtail } from "next/font/google";
+import { Big_Shoulders, Bodoni_Moda, Manrope, Outfit, Sora, Syncopate, Yellowtail } from "next/font/google";
 import type { FontPreset } from "@/clubs/types";
 
 /*
@@ -17,6 +17,9 @@ const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 const bigShoulders = Big_Shoulders({ subsets: ["latin"], variable: "--font-big-shoulders", preload: false });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", preload: false });
 const yellowtail = Yellowtail({ subsets: ["latin"], weight: "400", variable: "--font-yellowtail", preload: false });
+
+const syncopate = Syncopate({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-syncopate", preload: false });
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora", preload: false });
 
 interface PresetDef {
   className: string;
@@ -38,6 +41,14 @@ const presets: Record<FontPreset, PresetDef> = {
       "--club-display": "var(--font-big-shoulders)",
       "--club-sans": "var(--font-outfit)",
       "--club-script": "var(--font-yellowtail)",
+    },
+  },
+  vivide: {
+    className: `${syncopate.variable} ${sora.variable}`,
+    vars: {
+      "--club-display": "var(--font-sora)",
+      "--club-sans": "var(--font-sora)",
+      "--club-script": "var(--font-syncopate)",
     },
   },
 };

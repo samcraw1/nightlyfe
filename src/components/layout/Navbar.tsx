@@ -6,6 +6,7 @@ import { creditsEnabled, venue } from "@/config/venue";
 import Wordmark from "./Wordmark";
 import { useApp } from "@/lib/store";
 import { CoinIcon, UserIcon } from "./icons";
+import OverlayNavbar from "./OverlayNavbar";
 
 const links: { href: string; label: string; feature?: keyof typeof venue.features }[] = [
   { href: "/girls", label: venue.labels.performers },
@@ -18,6 +19,12 @@ const links: { href: string; label: string; feature?: keyof typeof venue.feature
 ];
 
 export default function Navbar() {
+  return venue.nav.style === "overlay" ? <OverlayNavbar links={links} /> : <BarNavbar />;
+}
+
+export type NavLink = (typeof links)[number];
+
+function BarNavbar() {
   const pathname = usePathname();
   const { credits, hydrated, setBuyCreditsOpen } = useApp();
 

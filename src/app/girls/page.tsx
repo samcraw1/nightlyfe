@@ -5,6 +5,7 @@ import { entertainers } from "@/data/entertainers";
 import PageHeader from "@/components/ui/PageHeader";
 import GirlCard from "@/components/girls/GirlCard";
 import { venue } from "@/config/venue";
+import { applyLineup, useClubOverrides } from "@/lib/club-overrides";
 
 type Tab = "tonight" | "all" | "featured";
 
@@ -17,7 +18,8 @@ const tabs: { id: Tab; label: string }[] = [
 export default function GirlsPage() {
   const [tab, setTab] = useState<Tab>("tonight");
 
-  const filtered = entertainers.filter((e) => {
+  const { overrides } = useClubOverrides();
+  const filtered = applyLineup(entertainers, overrides).filter((e) => {
     if (tab === "tonight") return e.workingTonight;
     if (tab === "featured") return e.featured;
     return true;

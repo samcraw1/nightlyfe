@@ -20,6 +20,16 @@
       ],
       "port": 3100,
       "autoPort": true
+    },
+    {
+      "name": "vivid",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:vivid"
+      ],
+      "port": 3200,
+      "autoPort": true
     }
   ]
 }

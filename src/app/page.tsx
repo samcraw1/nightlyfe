@@ -17,6 +17,7 @@ import NeonBackdrop from "@/components/home/NeonBackdrop";
 import WeeklySpecials from "@/components/home/WeeklySpecials";
 import LivePreview from "@/components/home/LivePreview";
 import VisitBlock from "@/components/home/VisitBlock";
+import CinematicHome from "@/components/home/cinematic/CinematicHome";
 
 const tonightCount = entertainers.filter((e) => e.workingTonight).length;
 const liveViewers = liveRooms.reduce((sum, r) => sum + r.viewerCount, 0);
@@ -37,6 +38,10 @@ const neon = venue.theme.style === "neon";
 const primaryCta = venue.home.primaryCta ?? { label: "Meet the Girls", href: "/girls" };
 
 export default function HomePage() {
+  return venue.home.layout === "cinematic" ? <CinematicHome /> : <StandardHome />;
+}
+
+function StandardHome() {
   return (
     <div>
       {/* ---- HERO ---- */}

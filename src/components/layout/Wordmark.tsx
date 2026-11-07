@@ -1,4 +1,5 @@
 import { venue } from "@/config/venue";
+import Monogram from "./Monogram";
 
 /**
  * The club's logo. Uses `theme.logoUrl` when a club supplies a logo file;
@@ -23,6 +24,20 @@ export default function Wordmark({
     const h = { md: "h-8", lg: "h-14", xl: "h-24 sm:h-36" }[size];
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={logoUrl} alt={venue.name} className={`${h} w-auto ${className}`} />;
+  }
+
+  if (style === "cinematic") {
+    const cine = {
+      md: { text: "text-[0.95rem]", mark: "h-6 w-6" },
+      lg: { text: "text-2xl", mark: "h-10 w-10" },
+      xl: { text: "text-3xl sm:text-6xl", mark: "h-14 w-14 sm:h-24 sm:w-24" },
+    }[size];
+    return (
+      <span className={`inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-bone ${className}`}>
+        <Monogram className={`${cine.mark} flex-shrink-0`} />
+        <span className={`font-wide font-bold uppercase tracking-[0.32em] ${cine.text}`}>{wordmark}</span>
+      </span>
+    );
   }
 
   if (style === "neon") {

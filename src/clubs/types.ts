@@ -36,6 +36,8 @@ export interface VenueFeatures {
   parking: boolean;
   jobs: boolean;
   bookings: boolean;
+  /** Demo admin dashboard at /admin (content editing preview). Off when omitted. */
+  adminPreview?: boolean;
 }
 
 export interface DigitalStageConfig {
@@ -71,13 +73,15 @@ export interface ThemeColors {
 }
 
 /** Font sets loaded in `src/config/fonts.ts`. */
-export type FontPreset = "classic" | "neon-pinup";
+export type FontPreset = "classic" | "neon-pinup" | "vivide";
 
 /**
  * Visual style. "classic" is the original gold/serif look; "neon" adds glow,
  * neon wordmark, an animated light-show hero, and scroll reveals.
+ * "cinematic" is a monochrome luxury look: wide-tracked caps, chrome/foil
+ * accents, slow camera-move hero plates, and scroll reveals.
  */
-export type ThemeStyle = "classic" | "neon";
+export type ThemeStyle = "classic" | "neon" | "cinematic";
 
 export interface WeeklySpecial {
   id: string;
@@ -150,8 +154,12 @@ export interface VenueConfig {
   };
   nav: {
     mobile: MobileNavKey[];
+    /** "overlay" = transparent over the hero with a full-screen menu. Default "bar". */
+    style?: "bar" | "overlay";
   };
   home: {
+    /** "cinematic" swaps in the full-screen cinematic home page. Default "standard". */
+    layout?: "standard" | "cinematic";
     eyebrow: string;
     /** Big hero line. Defaults to the venue name. */
     headline?: string;
@@ -171,6 +179,12 @@ export interface VenueConfig {
   /** Optional per-page header copy overrides. */
   pages?: Partial<Record<"kitchen" | "shop" | "events", PageCopy>>;
   features: VenueFeatures;
+  /** Instagram account, used by the feed preview and social CTAs. */
+  instagram?: { handle: string; url: string };
+  /** VIP booking contact as the club publishes it (e.g. on flyers). */
+  vip?: { phone?: string; promoter?: string; promoterUrl?: string; note?: string };
+  /** Signature offerings, e.g. the club's Instagram story highlights. */
+  highlights?: { title: string; blurb: string; hue: number; href?: string }[];
   digitalStage: DigitalStageConfig;
   eventsBooking: {
     description: string;

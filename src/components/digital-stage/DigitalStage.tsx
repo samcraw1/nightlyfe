@@ -47,7 +47,7 @@ export default function DigitalStage({ initial, events, visitNote, hours, phone,
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[1.8fr_1fr]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
         <div className="space-y-5">
           <AgeGate minAge={venue.ageRestriction} venueName={venue.name}>
             <StagePlayer
@@ -74,7 +74,7 @@ export default function DigitalStage({ initial, events, visitNote, hours, phone,
               <p className="font-display text-xl text-bone">Like what you see?</p>
               <p className="mt-1 text-xs text-muted">Tables go fast on show nights. Lock yours in before you head out.</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <Button href="/reserve">Reserve a VIP Table</Button>
               <Button href="/girls" variant="outline">All Entertainers</Button>
             </div>

@@ -163,7 +163,7 @@ export default function EventBookingForm() {
       </Button>
 
       <p className="mt-4 text-center text-[10px] uppercase tracking-wider text-muted">
-        We'll respond within 48 hours with pricing and availability
+        We&apos;ll respond within 48 hours with pricing and availability
       </p>
     </form>
   );

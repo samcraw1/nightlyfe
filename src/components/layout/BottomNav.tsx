@@ -5,15 +5,29 @@ import { usePathname } from "next/navigation";
 import { venue } from "@/config/venue";
 import { useApp } from "@/lib/store";
 import { conversations } from "@/data/messages";
-import { ChatIcon, HomeIcon, PlayIcon, SparkleIcon, UserIcon } from "./icons";
+import type { MobileNavKey } from "@/clubs/types";
+import { CalendarIcon, ChatIcon, CrownIcon, HomeIcon, PlayIcon, SparkleIcon, UserIcon } from "./icons";
 
-const items: { href: string; label: string; Icon: React.ComponentType<{className?: string}>; exact?: boolean; feature?: keyof typeof venue.features }[] = [
-  { href: "/", label: "Home", Icon: HomeIcon, exact: true },
-  { href: "/girls", label: "Girls", Icon: SparkleIcon },
-  { href: "/live", label: "Live", Icon: PlayIcon, feature: "liveStream" },
-  { href: "/messages", label: "Messages", Icon: ChatIcon },
-  { href: "/account", label: "Account", Icon: UserIcon },
-];
+type NavItem = {
+  href: string;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  exact?: boolean;
+  feature?: keyof typeof venue.features;
+};
+
+/** Every tab a club can put in its mobile bar; `venue.nav.mobile` picks and orders them. */
+const catalog: Record<MobileNavKey, NavItem> = {
+  home: { href: "/", label: "Home", Icon: HomeIcon, exact: true },
+  performers: { href: "/girls", label: venue.labels.performersShort, Icon: SparkleIcon },
+  live: { href: "/live", label: "Live", Icon: PlayIcon, feature: "liveStream" },
+  messages: { href: "/messages", label: "Messages", Icon: ChatIcon, feature: "messaging" },
+  reserve: { href: "/reserve", label: "VIP", Icon: CrownIcon },
+  events: { href: "/events", label: "Events", Icon: CalendarIcon },
+  account: { href: "/account", label: "Account", Icon: UserIcon },
+};
+
+const items = venue.nav.mobile.map((key) => catalog[key]);
 
 export default function BottomNav() {
   const pathname = usePathname();

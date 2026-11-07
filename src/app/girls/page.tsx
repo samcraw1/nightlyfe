@@ -4,6 +4,8 @@ import { useState } from "react";
 import { entertainers } from "@/data/entertainers";
 import PageHeader from "@/components/ui/PageHeader";
 import GirlCard from "@/components/girls/GirlCard";
+import { venue } from "@/config/venue";
+import { applyLineup, useClubOverrides } from "@/lib/club-overrides";
 
 type Tab = "tonight" | "all" | "featured";
 
@@ -16,7 +18,8 @@ const tabs: { id: Tab; label: string }[] = [
 export default function GirlsPage() {
   const [tab, setTab] = useState<Tab>("tonight");
 
-  const filtered = entertainers.filter((e) => {
+  const { overrides } = useClubOverrides();
+  const filtered = applyLineup(entertainers, overrides).filter((e) => {
     if (tab === "tonight") return e.workingTonight;
     if (tab === "featured") return e.featured;
     return true;
@@ -26,8 +29,12 @@ export default function GirlsPage() {
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
       <PageHeader
         eyebrow="The roster"
-        title="Meet the Girls"
-        description="World-class entertainers, every night of the week. Favorite the ones you love and message them directly."
+        title={`Meet the ${venue.labels.performers.replace(/^The /i, "")}`}
+        description={
+          venue.demo.fictionalPerformers
+            ? "Sample roster for this concept demo. Every name and profile here is fictional — real performer profiles would be added only with each entertainer's consent."
+            : `World-class entertainers, every night of the week. Favorite the ones you love${venue.features.messaging ? " and message them directly" : ""}.`
+        }
       />
 
       <div

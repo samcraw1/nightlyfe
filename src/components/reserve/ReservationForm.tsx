@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import { arrivalTimes, reservationPackages, tableOptions } from "@/data/reserve";
+import { arrivalTimes, reservationPackages as seedPackages, tableOptions as seedTables } from "@/data/reserve";
+import { applyPackages, applyTables, useClubOverrides } from "@/lib/club-overrides";
 import { venue } from "@/config/venue";
 import { formatMoney, newId } from "@/lib/format";
 import { useApp } from "@/lib/store";
@@ -13,6 +14,10 @@ const steps = ["Night", "Table", "Contact", "Confirm"] as const;
 
 export default function ReservationForm() {
   const { addReservation } = useApp();
+  // Admin-preview price edits (demo); identical to the seed data otherwise.
+  const { overrides } = useClubOverrides();
+  const tableOptions = applyTables(seedTables, overrides);
+  const reservationPackages = applyPackages(seedPackages, overrides);
   const [step, setStep] = useState(0);
   const [done, setDone] = useState<Reservation | null>(null);
 
@@ -78,8 +83,9 @@ export default function ReservationForm() {
           ))}
         </div>
         <p className="mt-5 text-xs text-muted">
-          A host will confirm by text at {done.phone}. Questions? Call{" "}
-          {venue.phone}. (Demo — nothing was booked or charged.)
+          A host will confirm by text at {done.phone}.{" "}
+          {venue.demo.transactionNote ??
+            `Questions? Call ${venue.phone}. (Demo — nothing was booked or charged.)`}
         </p>
         <div className="mt-7 flex justify-center gap-3">
           <Button href="/account" variant="outline">

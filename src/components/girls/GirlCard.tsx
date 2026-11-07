@@ -7,13 +7,15 @@ import Badge from "@/components/ui/Badge";
 import { HeartIcon } from "@/components/layout/icons";
 import { useApp } from "@/lib/store";
 import { formatCount } from "@/lib/format";
+import { venue } from "@/config/venue";
+import DemoBadge from "@/components/ui/DemoBadge";
 
 export default function GirlCard({ girl }: { girl: Entertainer }) {
   const { isFavorite, toggleFavorite, hydrated } = useApp();
   const fav = hydrated && isFavorite(girl.id);
 
   return (
-    <article className="glass group relative overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_rgba(212,169,78,0.12)]">
+    <article className="glass group relative overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_color-mix(in_srgb,var(--gold)_12%,transparent)]">
       <Link href={`/girls/${girl.id}`} className="block">
         <MockImage
           hue={girl.hue}
@@ -27,6 +29,7 @@ export default function GirlCard({ girl }: { girl: Entertainer }) {
               </Badge>
             ) : null}
             {girl.featured ? <Badge variant="gold">Featured</Badge> : null}
+            <DemoBadge kind="performer" />
           </div>
         </MockImage>
       </Link>
@@ -61,12 +64,14 @@ export default function GirlCard({ girl }: { girl: Entertainer }) {
           >
             Profile
           </Link>
-          <Link
-            href={`/messages/conv-${girl.id}`}
-            className="flex-1 rounded-full bg-gradient-to-b from-gold-bright via-gold to-gold-deep py-2 text-center text-[11px] font-bold uppercase tracking-wider text-ink transition hover:brightness-110"
-          >
-            Message
-          </Link>
+          {venue.features.messaging ? (
+            <Link
+              href={`/messages/conv-${girl.id}`}
+              className="flex-1 rounded-full bg-gradient-to-b from-gold-bright via-gold to-gold-deep py-2 text-center text-[11px] font-bold uppercase tracking-wider text-ink transition hover:brightness-110"
+            >
+              Message
+            </Link>
+          ) : null}
         </div>
       </div>
     </article>

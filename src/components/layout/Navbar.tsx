@@ -2,32 +2,38 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { venue } from "@/config/venue";
+import { creditsEnabled, venue } from "@/config/venue";
+import Wordmark from "./Wordmark";
 import { useApp } from "@/lib/store";
 import { CoinIcon, UserIcon } from "./icons";
+import OverlayNavbar from "./OverlayNavbar";
 
 const links: { href: string; label: string; feature?: keyof typeof venue.features }[] = [
-  { href: "/girls", label: "The Girls" },
+  { href: "/girls", label: venue.labels.performers },
   { href: "/live", label: "Live", feature: "liveStream" },
   { href: "/webcams", label: "Webcams", feature: "webcams" },
   { href: "/events", label: "Events" },
   { href: "/kitchen", label: "Kitchen", feature: "kitchen" },
   { href: "/shop", label: "Shop", feature: "merch" },
-  { href: "/bookings", label: "Bookings", feature: "bookings" }
+  { href: "/bookings", label: venue.labels.bookings ?? "Bookings", feature: "bookings" }
 ];
 
 export default function Navbar() {
+  return venue.nav.style === "overlay" ? <OverlayNavbar links={links} /> : <BarNavbar />;
+}
+
+export type NavLink = (typeof links)[number];
+
+function BarNavbar() {
   const pathname = usePathname();
   const { credits, hydrated, setBuyCreditsOpen } = useApp();
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-xl">
+    <header className="site-nav fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="group flex items-baseline gap-2">
-          <span className="gold-text font-display text-2xl tracking-wide">
-            {venue.name}
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.3em] text-muted transition group-hover:text-gold sm:block">
+          <Wordmark />
+          <span className={`hidden whitespace-nowrap text-[10px] uppercase tracking-[0.3em] text-muted transition group-hover:text-gold ${venue.theme.style === "neon" ? "xl:block" : "sm:block"}`}>
             {venue.tagline}
           </span>
         </Link>
@@ -55,6 +61,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {creditsEnabled ? (
           <button
             onClick={() => setBuyCreditsOpen(true)}
             className="flex items-center gap-1.5 rounded-full border border-gold/30 px-3 py-1.5 text-xs font-bold text-gold transition hover:bg-gold/10"
@@ -63,6 +70,7 @@ export default function Navbar() {
             <CoinIcon className="h-4 w-4" />
             <span suppressHydrationWarning>{hydrated ? credits : "—"}</span>
           </button>
+          ) : null}
           <Link
             href="/reserve"
             className="hidden rounded-full bg-gradient-to-b from-gold-bright via-gold to-gold-deep px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-ink transition hover:brightness-110 sm:block"

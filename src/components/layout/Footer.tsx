@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { venue } from "@/config/venue";
+import Wordmark from "./Wordmark";
 
 export default function Footer() {
   return (
@@ -7,9 +8,10 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="grid gap-8 sm:grid-cols-3">
           <div>
-            <p className="gold-text font-display text-2xl">{venue.name}</p>
+            <Wordmark />
             <p className="mt-1 text-[10px] uppercase tracking-[0.3em] text-muted">
               {venue.tagline}
+              {venue.established ? ` · ${venue.established}` : ""}
             </p>
             <p className="mt-4 text-xs leading-relaxed text-muted">
               {venue.address}
@@ -19,16 +21,20 @@ export default function Footer() {
           </div>
           <div>
             <p className="eyebrow mb-3">Hours</p>
-            <ul className="space-y-1.5 text-xs text-bone/70">
-              {venue.hours.map((h) => (
-                <li key={h.days} className="flex justify-between gap-4">
-                  <span>{h.days}</span>
-                  <span className="text-gold">
-                    {h.open} – {h.close}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {venue.hours.length ? (
+              <ul className="space-y-1.5 text-xs text-bone/70">
+                {venue.hours.map((h) => (
+                  <li key={h.days} className="flex justify-between gap-4">
+                    <span>{h.days}</span>
+                    <span className="text-gold">
+                      {h.open} – {h.close}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-bone/60">{venue.hoursNote}</p>
+            )}
           </div>
           <div>
             <p className="eyebrow mb-3">Follow</p>
@@ -45,17 +51,26 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
-              <li>
-                <Link href="/jobs" className="text-bone/70 transition hover:text-gold">
-                  Join the team
-                </Link>
-              </li>
+              {venue.features.adminPreview ? (
+                <li>
+                  <Link href="/admin" className="text-bone/70 transition hover:text-gold">
+                    Admin preview (demo)
+                  </Link>
+                </li>
+              ) : null}
+              {venue.features.jobs ? (
+                <li>
+                  <Link href="/jobs" className="text-bone/70 transition hover:text-gold">
+                    Join the team
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </div>
         </div>
         <div className="hairline my-8" />
         <p className="text-center text-[10px] uppercase tracking-[0.2em] text-muted">
-          21+ · Valid ID required · Demo template — all people and content are fictional
+          {venue.demo.footerNote}
         </p>
       </div>
     </footer>

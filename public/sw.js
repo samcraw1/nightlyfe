@@ -3,7 +3,7 @@
  * served. Icons and the manifest are pre-cached. Deliberately simple — no
  * runtime caching of app pages to avoid stale-content bugs during demos.
  */
-const CACHE = "onyx-v1";
+const CACHE = "venue-shell-v2";
 const PRECACHE = [
   "/offline",
   "/manifest.webmanifest",

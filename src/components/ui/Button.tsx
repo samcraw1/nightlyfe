@@ -8,12 +8,12 @@ const base =
   "inline-flex items-center justify-center gap-2 font-semibold tracking-wide uppercase rounded-full transition-all duration-200 whitespace-nowrap disabled:opacity-40 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  gold: "bg-gradient-to-b from-gold-bright via-gold to-gold-deep text-ink shadow-[0_0_24px_rgba(212,169,78,0.25)] hover:shadow-[0_0_36px_rgba(212,169,78,0.45)] hover:brightness-110 active:scale-[0.98]",
+  gold: "bg-gradient-to-b from-gold-bright via-gold to-gold-deep text-ink shadow-[0_0_24px_color-mix(in_srgb,var(--gold)_25%,transparent)] hover:shadow-[0_0_36px_color-mix(in_srgb,var(--gold)_45%,transparent)] hover:brightness-110 active:scale-[0.98]",
   outline:
     "border border-gold/40 text-gold hover:border-gold hover:bg-gold/10 active:scale-[0.98]",
   ghost: "text-bone/80 hover:text-gold hover:bg-white/5 active:scale-[0.98]",
   blood:
-    "bg-gradient-to-b from-[#e0203f] to-blood text-white shadow-[0_0_24px_rgba(193,20,48,0.3)] hover:brightness-110 active:scale-[0.98]",
+    "bg-gradient-to-b from-[color-mix(in_srgb,var(--blood)_80%,white)] to-blood text-white shadow-[0_0_24px_color-mix(in_srgb,var(--blood)_30%,transparent)] hover:brightness-110 active:scale-[0.98]",
 };
 
 const sizes: Record<Size, string> = {

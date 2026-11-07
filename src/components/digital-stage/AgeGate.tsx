@@ -35,11 +35,11 @@ export default function AgeGate({ minAge, venueName, children }: { minAge: numbe
   if (acknowledged === null) return <div className="aspect-video w-full rounded-3xl bg-black/40" aria-hidden />;
 
   return (
-    <div className="glass flex aspect-video w-full flex-col items-center justify-center rounded-3xl p-8 text-center">
+    <div className="glass flex min-h-72 w-full flex-col items-center justify-center rounded-3xl p-6 text-center sm:aspect-video sm:min-h-0 sm:p-8">
       <p className="eyebrow mb-2">Age restricted</p>
       <p className="font-display text-2xl text-bone">You must be {minAge}+ to watch the {venueName} stage</p>
       <p className="mt-2 max-w-sm text-sm text-muted">By continuing you confirm you are at least {minAge} years old and it is legal to view this content where you are.</p>
-      <div className="mt-6 flex gap-3">
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Button onClick={accept}>I am {minAge} or older</Button>
         <Button href="/" variant="outline">Leave</Button>
       </div>

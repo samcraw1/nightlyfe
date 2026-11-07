@@ -2,7 +2,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database, DigitalStageRow, EntertainerRow, VenuePublicRow } from "@/types/database";
 import { getAnonSupabase, getServerSupabase } from "@/lib/supabase/server";
-import { getCapabilities } from "./mode";
+import { DEFAULT_VENUE_SLUG, getCapabilities } from "./mode";
 import { getLiveVideoService } from "./video";
 import {
   StageError,
@@ -135,7 +135,7 @@ async function buildSnapshot(venueSlug: string): Promise<StageSnapshot | null> {
   const stage = toStage(stageRow);
   const entertainers = (entertainerRows ?? []).map(toEntertainer);
   const byId = (id: string | null) => entertainers.find((e) => e.id === id) ?? null;
-  const playbackUrl = venue.playbackUrl || (venueSlug === (process.env.NEXT_PUBLIC_DEFAULT_VENUE_SLUG || "onyx") ? process.env.AWS_IVS_PLAYBACK_URL || null : null);
+  const playbackUrl = venue.playbackUrl || (venueSlug === DEFAULT_VENUE_SLUG ? process.env.AWS_IVS_PLAYBACK_URL || null : null);
 
   return {
     mode: "production",

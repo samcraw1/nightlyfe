@@ -12,17 +12,26 @@ npm run dev
 
 Production build: `npm run build && npm start` (the service worker / offline fallback only registers in production).
 
-## Rebranding for a new venue
+## Clubs (multi-tenant configuration)
 
-Edit `src/config/venue.ts` — name, tagline, address, colors, and feature flags. Colors flow into CSS variables in the root layout; feature flags (`webcams`, `messaging`, `kitchen`, `merch`, `parking`, `jobs`) gate nav links, home cards, and modules. Placeholder art is generated locally by `src/components/ui/MockImage.tsx` — swap it for real photography per venue.
+Each club is a folder in `src/clubs/<slug>/`: branding, contact info, colors, fonts, copy, navigation, feature flags, and seed content. A build serves one club, chosen with `NEXT_PUBLIC_CLUB` (default `onyx`). Only that club's folder is compiled in.
+
+| Club | Command | Notes |
+| --- | --- | --- |
+| ONYX (template) | `npm run dev` | Fictional reference brand |
+| Pin Ups Atlanta | `npm run dev:pinups` | Unofficial concept demo for a sales pitch |
+
+See [docs/NEW_CLUB.md](docs/NEW_CLUB.md) to add a club and deploy it as its own Vercel project.
 
 ## Structure
 
 ```
 src/
-  config/venue.ts     central branding + feature flags
+  clubs/<slug>/       per-club config + content (the tenant layer)
+  config/venue.ts     active club's config (single import point)
+  config/fonts.ts     font presets clubs choose from
   types/              shared TypeScript interfaces
-  data/               mock data (entertainers, events, webcams, menu, messages, shop…)
+  data/               active club's content + helpers (entertainers, events, menu, shop…)
   lib/store.tsx       demo client state (credits, favorites, cart…) in localStorage
   components/         ui primitives + feature components (layout, girls, live, messages…)
   app/                routes (girls, live, webcams, messages, reserve, events, kitchen, jobs, shop, account)

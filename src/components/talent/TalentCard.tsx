@@ -8,7 +8,7 @@ import { formatCount } from "@/lib/format";
 
 export default function TalentCard({ talent }: { talent: Entertainer }) {
   return (
-    <article className="glass group relative overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_rgba(212,169,78,0.12)]">
+    <article className="glass group relative overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_color-mix(in_srgb,var(--gold)_12%,transparent)]">
       <Link href={`/talent/${talent.id}`} className="block">
         <MockImage
           hue={talent.hue}

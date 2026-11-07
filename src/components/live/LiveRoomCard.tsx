@@ -12,7 +12,7 @@ interface LiveRoomCardProps {
 /** Discovery card for an entertainer's livestream room. */
 export default function LiveRoomCard({ room, girl }: LiveRoomCardProps) {
   return (
-    <article className="glass group overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_rgba(212,169,78,0.12)]">
+    <article className="glass group overflow-hidden rounded-3xl transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_color-mix(in_srgb,var(--gold)_12%,transparent)]">
       <Link href={`/webcams/${room.id}`} className="block">
         <MockImage
           hue={girl.hue}

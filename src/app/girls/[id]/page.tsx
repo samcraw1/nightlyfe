@@ -6,6 +6,8 @@ import Button from "@/components/ui/Button";
 import GirlProfileActions from "@/components/girls/GirlProfileActions";
 import SocialLinks from "@/components/girls/SocialLinks";
 import { formatCount } from "@/lib/format";
+import { venue } from "@/config/venue";
+import DemoBadge from "@/components/ui/DemoBadge";
 
 export function generateStaticParams() {
   return entertainers.map((e) => ({ id: e.id }));
@@ -51,6 +53,7 @@ export default async function GirlProfilePage({
               <Badge variant="muted">Off tonight</Badge>
             )}
             {girl.featured ? <Badge variant="gold">Featured</Badge> : null}
+            <DemoBadge kind="performer" />
           </div>
           <h1 className="gold-text font-display text-5xl sm:text-6xl">
             {girl.name}
@@ -59,6 +62,12 @@ export default async function GirlProfilePage({
           <p className="mt-1 text-xs uppercase tracking-wider text-muted">
             {formatCount(girl.followers)} followers
           </p>
+          {venue.demo.fictionalPerformers ? (
+            <p className="mt-3 max-w-lg rounded-2xl border border-dashed border-bone/25 px-4 py-2.5 text-xs text-bone/70">
+              Fictional demo profile. This is not a real {venue.name} entertainer — sample content showing how
+              performer pages would look.
+            </p>
+          ) : null}
           <SocialLinks socials={girl.socials} name={girl.name} className="mt-4" />
           <div className="mt-6">
             <GirlProfileActions girl={girl} />
@@ -110,7 +119,7 @@ export default async function GirlProfilePage({
                 className="absolute inset-0 opacity-50"
                 style={{
                   background:
-                    "radial-gradient(80% 100% at 50% 0%, rgba(212,169,78,0.15), transparent 70%)",
+                    "radial-gradient(80% 100% at 50% 0%, color-mix(in srgb, var(--gold) 15%, transparent), transparent 70%)",
                 }}
               />
               <div className="relative">
@@ -133,7 +142,7 @@ export default async function GirlProfilePage({
                   className="absolute inset-0 opacity-50"
                   style={{
                     background:
-                      "radial-gradient(80% 100% at 50% 0%, rgba(212,169,78,0.15), transparent 70%)",
+                      "radial-gradient(80% 100% at 50% 0%, color-mix(in srgb, var(--gold) 15%, transparent), transparent 70%)",
                   }}
                 />
                 <div className="relative">

@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:pinups": "NEXT_PUBLIC_CLUB=pinups-atl DIGITAL_STAGE_MODE=demo next dev",
     "build": "next build",
+    "build:pinups": "NEXT_PUBLIC_CLUB=pinups-atl DIGITAL_STAGE_MODE=demo next build",
     "start": "next start",
     "lint": "eslint"
   },

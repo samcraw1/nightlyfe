@@ -78,8 +78,9 @@ export default function ReservationForm() {
           ))}
         </div>
         <p className="mt-5 text-xs text-muted">
-          A host will confirm by text at {done.phone}. Questions? Call{" "}
-          {venue.phone}. (Demo — nothing was booked or charged.)
+          A host will confirm by text at {done.phone}.{" "}
+          {venue.demo.transactionNote ??
+            `Questions? Call ${venue.phone}. (Demo — nothing was booked or charged.)`}
         </p>
         <div className="mt-7 flex justify-center gap-3">
           <Button href="/account" variant="outline">

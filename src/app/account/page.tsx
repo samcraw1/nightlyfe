@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { venue } from "@/config/venue";
+import { creditsEnabled, venue } from "@/config/venue";
 import { entertainers } from "@/data/entertainers";
 import { conversations } from "@/data/messages";
 import PageHeader from "@/components/ui/PageHeader";
@@ -75,7 +75,8 @@ export default function AccountPage() {
       </section>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* credits */}
+        {/* credits (only for clubs with paid messaging / webcams) */}
+        {creditsEnabled ? (
         <section className="glass rounded-3xl p-6">
           <p className="eyebrow mb-3">Credit balance</p>
           <div className="flex items-center gap-3">
@@ -99,13 +100,25 @@ export default function AccountPage() {
             </Button>
           </div>
         </section>
+        ) : (
+          <section className="glass rounded-3xl p-6">
+            <p className="eyebrow mb-3">Quick actions</p>
+            <p className="text-sm text-bone/75">Book your section or check who&apos;s on the Digital Stage.</p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Button size="sm" href="/reserve">Reserve VIP</Button>
+              {venue.features.liveStream ? (
+                <Button size="sm" variant="outline" href="/live">Watch Live</Button>
+              ) : null}
+            </div>
+          </section>
+        )}
 
         {/* notifications */}
         <section className="glass rounded-3xl p-6">
           <p className="eyebrow mb-4">Notifications</p>
           {[
             { label: "Event announcements", value: notifEvents, toggle: () => setNotifEvents((v) => !v) },
-            { label: "New messages", value: notifMessages, toggle: () => setNotifMessages((v) => !v) },
+            { label: venue.features.messaging ? "New messages" : "Stage & lineup alerts", value: notifMessages, toggle: () => setNotifMessages((v) => !v) },
           ].map((n) => (
             <button
               key={n.label}

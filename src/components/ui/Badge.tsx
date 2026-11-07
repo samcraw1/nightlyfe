@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 
-type Variant = "live" | "gold" | "muted" | "tonight";
+type Variant = "live" | "gold" | "muted" | "tonight" | "demo";
 
 const variants: Record<Variant, string> = {
   live: "bg-blood text-white",
   gold: "bg-gold/15 text-gold border border-gold/30",
   muted: "bg-white/5 text-muted border border-white/10",
   tonight: "bg-gold text-ink",
+  demo: "bg-black/55 text-bone/85 border border-dashed border-bone/40 backdrop-blur",
 };
 
 export default function Badge({

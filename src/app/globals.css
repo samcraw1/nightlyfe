@@ -10,7 +10,11 @@
   --gold-bright: #f0d78c;
   --gold-deep: #8a6d2f;
   --blood: #c11430;
-  --line: rgba(212, 169, 78, 0.18);
+  --accent-2: #8a6d2f;
+  --line: color-mix(in srgb, var(--gold) 18%, transparent);
+  --club-display: var(--font-bodoni);
+  --club-sans: var(--font-manrope);
+  --club-script: var(--font-bodoni);
 }
 
 @theme inline {
@@ -23,9 +27,11 @@
   --color-gold-bright: var(--gold-bright);
   --color-gold-deep: var(--gold-deep);
   --color-blood: var(--blood);
+  --color-accent-2: var(--accent-2);
   --color-line: var(--line);
-  --font-display: var(--font-bodoni);
-  --font-sans: var(--font-manrope);
+  --font-display: var(--club-display);
+  --font-sans: var(--club-sans);
+  --font-script: var(--club-script);
 }
 
 html {
@@ -36,7 +42,7 @@ html {
 body {
   background: var(--ink);
   color: var(--bone);
-  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-family: var(--club-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -70,7 +76,11 @@ body {
 /* ---- brand utilities ---- */
 
 .font-display {
-  font-family: var(--font-bodoni), Didot, "Bodoni MT", serif;
+  font-family: var(--club-display), Didot, "Bodoni MT", serif;
+}
+
+.font-script {
+  font-family: var(--club-script), cursive;
 }
 
 .gold-text {
@@ -100,8 +110,8 @@ body {
 .glass-strong {
   background: linear-gradient(
     160deg,
-    rgba(24, 19, 14, 0.88),
-    rgba(10, 8, 8, 0.92)
+    color-mix(in srgb, var(--ink-2) 88%, transparent),
+    color-mix(in srgb, var(--ink) 92%, transparent)
   );
   border: 1px solid var(--line);
   backdrop-filter: blur(18px);
@@ -193,4 +203,232 @@ body {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* ---- demo ribbon offset ---- */
+html[data-ribbon] .site-nav {
+  top: 1.75rem;
+}
+html[data-ribbon] .site-main {
+  padding-top: 5.75rem;
+}
+
+/* ---- scroll reveal (opt-in via theme style) ---- */
+[data-style="neon"] .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-style="neon"] .reveal[data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- simulated stage lights (player + live preview) ---- */
+.stage-lights {
+  display: none;
+}
+[data-style="neon"] .stage-lights {
+  display: block;
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background:
+    conic-gradient(from 200deg at 20% -10%, transparent 40%, color-mix(in srgb, var(--gold) 35%, transparent) 47%, transparent 54%),
+    conic-gradient(from 160deg at 80% -10%, transparent 40%, color-mix(in srgb, var(--accent-2) 40%, transparent) 47%, transparent 54%);
+  animation: stage-sweep 6s ease-in-out infinite alternate;
+  transform-origin: 50% 0;
+}
+@keyframes stage-sweep {
+  0% { transform: rotate(-4deg) scaleX(1); opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { transform: rotate(4deg) scaleX(1.1); opacity: 0.75; }
+}
+
+/* =====================================================================
+ * NEON style — used by clubs with `theme.style: "neon"`.
+ * Everything below is scoped to [data-style="neon"] so classic clubs are
+ * untouched.
+ * ===================================================================== */
+
+[data-style="neon"] body {
+  background:
+    radial-gradient(60% 40% at 100% 0%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 70%),
+    radial-gradient(50% 35% at 0% 30%, color-mix(in srgb, var(--gold) 7%, transparent), transparent 70%),
+    var(--ink);
+  background-attachment: fixed;
+}
+
+[data-style="neon"] .gold-text {
+  background: linear-gradient(100deg, var(--gold-bright) 0%, var(--gold) 45%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--gold) 35%, transparent));
+}
+
+[data-style="neon"] .font-display {
+  letter-spacing: 0.01em;
+}
+
+[data-style="neon"] .eyebrow {
+  color: var(--gold-bright);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--gold) 60%, transparent);
+}
+
+[data-style="neon"] .glass {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--gold) 6%, rgba(255, 255, 255, 0.04)),
+    rgba(255, 255, 255, 0.012) 60%
+  );
+}
+
+[data-style="neon"] .hairline {
+  background: linear-gradient(90deg, transparent, var(--gold), var(--accent-2), transparent);
+  box-shadow: 0 0 12px var(--gold);
+}
+
+/* neon wordmark */
+.neon-wordmark {
+  color: #fff6fb;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px var(--gold-bright),
+    0 0 22px var(--gold),
+    0 0 42px var(--gold),
+    0 0 80px color-mix(in srgb, var(--gold) 60%, transparent);
+  padding-right: 0.08em;
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 22%, 55% {
+    opacity: 0.55;
+  }
+}
+.neon-flicker {
+  animation: neon-flicker 5s linear infinite;
+}
+
+.hero-headline {
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* light-show hero backdrop */
+.neon-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--ink-2), var(--ink));
+}
+.neon-field {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.95;
+  will-change: transform;
+}
+.neon-field-a {
+  width: 70vmax; height: 70vmax; left: -20vmax; top: -25vmax;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gold) 70%, transparent), transparent 65%);
+  animation: field-drift-a 18s ease-in-out infinite alternate;
+}
+.neon-field-b {
+  width: 60vmax; height: 60vmax; right: -22vmax; top: -10vmax;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 75%, transparent), transparent 65%);
+  animation: field-drift-b 22s ease-in-out infinite alternate;
+}
+.neon-field-c {
+  width: 50vmax; height: 50vmax; left: 25%; bottom: -30vmax;
+  background: radial-gradient(circle, color-mix(in srgb, var(--blood) 55%, transparent), transparent 65%);
+  animation: field-drift-a 26s ease-in-out infinite alternate-reverse;
+}
+@keyframes field-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(12vw, 8vh, 0) scale(1.15); }
+}
+@keyframes field-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to { transform: translate3d(-14vw, 12vh, 0) scale(0.95); }
+}
+.neon-beam {
+  position: absolute;
+  top: -20%;
+  width: 18vmax;
+  height: 140%;
+  transform-origin: 50% 0;
+  background: linear-gradient(180deg, color-mix(in srgb, #fff 22%, transparent), transparent 75%);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  opacity: 0.35;
+}
+.neon-beam-1 { left: 12%; animation: beam-sweep 9s ease-in-out infinite alternate; }
+.neon-beam-2 { left: 48%; animation: beam-sweep 11s ease-in-out infinite alternate-reverse; background: linear-gradient(180deg, color-mix(in srgb, var(--gold-bright) 40%, transparent), transparent 75%); }
+.neon-beam-3 { left: 78%; animation: beam-sweep 13s ease-in-out infinite alternate; background: linear-gradient(180deg, color-mix(in srgb, var(--accent-2) 45%, transparent), transparent 75%); }
+@keyframes beam-sweep {
+  from { transform: rotate(-22deg); }
+  to { transform: rotate(22deg); }
+}
+.neon-floor {
+  position: absolute;
+  inset: auto -10% -2% -10%;
+  height: 45%;
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--gold) 30%, transparent) 0 1px, transparent 1px 70px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--gold) 22%, transparent) 0 1px, transparent 1px 44px);
+  transform: perspective(500px) rotateX(62deg);
+  transform-origin: 50% 100%;
+  mask-image: linear-gradient(180deg, transparent, #000 70%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 70%);
+  opacity: 0.45;
+}
+.neon-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+}
+
+/* weekly special cards */
+.special-card {
+  isolation: isolate;
+}
+.special-glow {
+  position: absolute;
+  inset: -30% -30% auto auto;
+  width: 85%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, hsl(var(--special-hue) 95% 60% / 0.55), transparent 65%);
+  filter: blur(30px);
+  z-index: -1;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  opacity: 0.7;
+}
+.special-card:hover .special-glow {
+  transform: scale(1.25);
+  opacity: 1;
+}
+[data-style="neon"] .special-card:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent), 0 12px 50px color-mix(in srgb, var(--gold) 22%, transparent);
+}
+
+.visit-glow {
+  position: absolute;
+  inset: auto -20% -60% auto;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 35%, transparent), transparent 65%);
+  filter: blur(40px);
+}
+
+/* neon buttons get a dual-tone glow */
+[data-style="neon"] .bg-gradient-to-b.from-gold-bright {
+  background-image: linear-gradient(135deg, var(--gold-bright), var(--gold) 45%, var(--accent-2));
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }

@@ -65,9 +65,9 @@ export default function ShopPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
       <PageHeader
-        eyebrow="Wear the crest"
-        title="Shop"
-        description={`Official ${venue.name} merch — printed in small runs, gone when it's gone.`}
+        eyebrow={venue.pages?.shop?.eyebrow ?? "Wear the crest"}
+        title={venue.pages?.shop?.title ?? "Shop"}
+        description={venue.pages?.shop?.description ?? `Official ${venue.name} merch — printed in small runs, gone when it's gone.`}
       />
       <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
         {products.map((p) => (

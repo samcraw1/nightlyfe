@@ -19,6 +19,7 @@ import {
 import type { BookingForm, LiveRoom, Message, Reservation, TicketOrder } from "@/types";
 import { seedMessages, STARTING_CREDITS } from "@/data/messages";
 import { liveRooms as seedLiveRooms } from "@/data/liveRooms";
+import { venue } from "@/config/venue";
 
 interface CartItem {
   id: string;
@@ -69,7 +70,8 @@ interface AppState {
 
 const AppContext = createContext<AppState | null>(null);
 
-const LS_KEY = "onyx-demo-state-v1";
+// Namespaced per tenant so two clubs on one origin (e.g. localhost) never share state.
+const LS_KEY = `${venue.slug}-demo-state-v1`;
 
 interface PersistedState {
   credits: number;

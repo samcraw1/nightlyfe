@@ -67,8 +67,8 @@ export default function BroadcasterDashboard({ initial, actor }: BroadcasterDash
           className="absolute inset-0 opacity-50"
           style={{
             background: stage.isLive
-              ? "radial-gradient(80% 100% at 50% 0%, rgba(193,20,48,0.18), transparent 70%)"
-              : "radial-gradient(80% 100% at 50% 0%, rgba(212,169,78,0.12), transparent 70%)",
+              ? "radial-gradient(80% 100% at 50% 0%, color-mix(in srgb, var(--blood) 18%, transparent), transparent 70%)"
+              : "radial-gradient(80% 100% at 50% 0%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 70%)",
           }}
         />
         <div className="relative">

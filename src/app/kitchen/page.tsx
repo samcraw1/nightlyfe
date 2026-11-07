@@ -10,6 +10,7 @@ import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import { formatMoney } from "@/lib/format";
 import { parseCartId } from "@/lib/cart";
+import { venue } from "@/config/venue";
 import { useApp } from "@/lib/store";
 
 export default function KitchenPage() {
@@ -44,9 +45,9 @@ export default function KitchenPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 pb-24 sm:px-6">
       <PageHeader
-        eyebrow="Open until 2:30AM"
-        title="The Kitchen"
-        description="Late-night food done right. Order to your table or the bar."
+        eyebrow={venue.pages?.kitchen?.eyebrow ?? "Open until 2:30AM"}
+        title={venue.pages?.kitchen?.title ?? "The Kitchen"}
+        description={venue.pages?.kitchen?.description ?? "Late-night food done right. Order to your table or the bar."}
       />
 
       <div className="no-scrollbar mb-6 flex gap-2 overflow-x-auto">

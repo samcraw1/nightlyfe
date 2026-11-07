@@ -37,8 +37,9 @@ interface DemoDb {
 const DEMO_STAGE_ID = "demo-stage";
 const DEMO_VENUE_ID = "demo-venue";
 
+const demoSeed = venueConfig.digitalStage.demo ?? {};
 /** One performer is left without consent on file to show the gating rule. */
-const NO_CONSENT_DEMO_SLUG = "raven";
+const NO_CONSENT_DEMO_ID = demoSeed.noConsentId;
 
 function buildDb(): DemoDb {
   const now = new Date().toISOString();
@@ -52,13 +53,21 @@ function buildDb(): DemoDb {
       profileImageUrl: null,
       hue: e.hue,
       isActive: true,
-      consentGiven: e.id !== NO_CONSENT_DEMO_SLUG,
+      consentGiven: e.id !== NO_CONSENT_DEMO_ID,
       featuredTonight: Boolean(e.workingTonight),
     }));
-  // Tonight's rotation, with Goldie first so the demo matches the product story.
+  // Tonight's rotation, with the club's configured opening order first.
+  const order = demoSeed.openingOrder ?? [];
+  const rank = (id: string) => {
+    const i = order.indexOf(id);
+    return i === -1 ? order.length : i;
+  };
   const tonight = entertainers
     .filter((e) => e.featuredTonight && e.consentGiven)
-    .sort((a, b) => (a.slug === "goldie" ? -1 : b.slug === "goldie" ? 1 : a.slug === "sapphire" ? -1 : b.slug === "sapphire" ? 1 : 0));
+    .sort((a, b) => rank(a.id) - rank(b.id));
+  // Optionally open with the stage already live (simulated) for walk-in demos.
+  const startLive = Boolean(demoSeed.startLive && tonight.length > 0);
+  const [opener, ...rest] = tonight;
   return {
     venue: {
       id: DEMO_VENUE_ID,
@@ -75,16 +84,16 @@ function buildDb(): DemoDb {
     stage: {
       id: DEMO_STAGE_ID,
       venueId: DEMO_VENUE_ID,
-      isLive: false,
-      activeEntertainerId: null,
-      nextEntertainerId: tonight[0]?.id ?? null,
-      rotationQueue: tonight.slice(1, 4).map((e) => e.id),
-      streamStartedAt: null,
+      isLive: startLive,
+      activeEntertainerId: startLive ? opener.id : null,
+      nextEntertainerId: startLive ? (rest[0]?.id ?? null) : (opener?.id ?? null),
+      rotationQueue: (startLive ? rest.slice(1, 4) : rest.slice(0, 3)).map((e) => e.id),
+      streamStartedAt: startLive ? now : null,
       streamEndedAt: null,
       updatedAt: now,
     },
     entertainers,
-    sessions: [],
+    sessions: startLive ? [{ id: "session-seed", entertainerId: opener.id, startedAt: now, endedAt: null, status: "live" }] : [],
     audit: [],
   };
 }

@@ -5,6 +5,7 @@ import Badge from "@/components/ui/Badge";
 import { formatEventDate } from "@/data/events";
 import { formatMoney } from "@/lib/format";
 import { venue } from "@/config/venue";
+import DemoBadge from "@/components/ui/DemoBadge";
 
 export default function EventCard({ event }: { event: ClubEvent }) {
   return (
@@ -15,8 +16,9 @@ export default function EventCard({ event }: { event: ClubEvent }) {
           label={event.title}
           className="aspect-[16/9] w-full transition duration-500 group-hover:scale-[1.03]"
         >
-          <div className="absolute left-4 top-4">
+          <div className="absolute left-4 top-4 flex gap-2">
             {event.featured ? <Badge variant="tonight">Featured</Badge> : null}
+            <DemoBadge kind="sample" />
           </div>
           <div className="absolute bottom-3 left-4 right-4">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">

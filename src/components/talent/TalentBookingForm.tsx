@@ -60,7 +60,7 @@ export default function TalentBookingForm() {
         </div>
         <p className="font-display text-2xl text-bone">Inquiry submitted</p>
         <p className="mt-2 text-sm text-muted">
-          We'll review your request and get back to you shortly.
+          We&apos;ll review your request and get back to you shortly.
         </p>
         <p className="mt-2 text-[10px] uppercase tracking-wider text-muted">
           Demo inquiry — no one was actually booked

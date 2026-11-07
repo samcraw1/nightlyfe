@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { venue } from "@/config/venue";
 import { entertainers } from "@/data/entertainers";
-import { events, formatEventDate } from "@/data/events";
+import { events, formatEventDate, weeklySpecials } from "@/data/events";
 import { liveRooms } from "@/data/liveRooms";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -10,13 +10,20 @@ import MockImage from "@/components/ui/MockImage";
 import GirlCard from "@/components/girls/GirlCard";
 import EventCard from "@/components/events/EventCard";
 import { formatMoney } from "@/lib/format";
+import Wordmark from "@/components/layout/Wordmark";
+import Reveal from "@/components/ui/Reveal";
+import DemoBadge from "@/components/ui/DemoBadge";
+import NeonBackdrop from "@/components/home/NeonBackdrop";
+import WeeklySpecials from "@/components/home/WeeklySpecials";
+import LivePreview from "@/components/home/LivePreview";
+import VisitBlock from "@/components/home/VisitBlock";
 
 const tonightCount = entertainers.filter((e) => e.workingTonight).length;
 const liveViewers = liveRooms.reduce((sum, r) => sum + r.viewerCount, 0);
 const featuredEvent = events.find((e) => e.featured) ?? events[0];
 const featuredGirls = entertainers.filter((e) => e.featured);
 
-const tickerItems = [
+const tickerItems = venue.home.ticker ?? [
   "Doors open 8PM",
   `${tonightCount} girls working tonight`,
   "DJ Smooth on the decks",
@@ -25,25 +32,9 @@ const tickerItems = [
   `${liveViewers.toLocaleString()} watching live`,
 ];
 
-interface ModuleCard {
-  href: string;
-  title: string;
-  blurb: string;
-  hue: number;
-  feature?: keyof typeof venue.features;
-}
-
-const modules: ModuleCard[] = [
-  { href: "/girls", title: "Meet the Girls", blurb: "The full roster — see who's working tonight.", hue: 330 },
-  { href: "/live", title: "Watch Live", blurb: "The main stage stream, live from the floor.", hue: 350, feature: "liveStream" },
-  { href: "/webcams", title: "Webcams", blurb: "Your favorite entertainers, streaming live.", hue: 270, feature: "webcams" },
-  { href: "/messages", title: "Messages", blurb: "Talk directly with your favorite entertainers.", hue: 210, feature: "messaging" },
-  { href: "/reserve", title: "Reserve a Table", blurb: "VIP sections, bottle packages, stage-side seats.", hue: 42 },
-  { href: "/events", title: "Events & Parking", blurb: "Tickets, guest DJs, and pre-paid parking.", hue: 190 },
-  { href: "/kitchen", title: "The Kitchen", blurb: "Lemon pepper wet until 2:30AM. Enough said.", hue: 25, feature: "kitchen" },
-  { href: "/jobs", title: "Join the Team", blurb: "Entertainers, bar, floor, kitchen, security.", hue: 150, feature: "jobs" },
-  { href: "/shop", title: "Shop Merch", blurb: "Wear the crest. Tees, hats, and hoodies.", hue: 45, feature: "merch" },
-];
+const modules = venue.home.modules;
+const neon = venue.theme.style === "neon";
+const primaryCta = venue.home.primaryCta ?? { label: "Meet the Girls", href: "/girls" };
 
 export default function HomePage() {
   return (
@@ -51,29 +42,42 @@ export default function HomePage() {
       {/* ---- HERO ---- */}
       <section className="relative -mt-16 flex min-h-[92svh] items-end overflow-hidden pt-16">
         <div className="absolute inset-0">
-          <MockImage hue={40} className="drift h-full w-full" />
+          {neon ? (
+            <NeonBackdrop className="h-full w-full" />
+          ) : (
+            <MockImage hue={venue.theme.heroHue} className="drift h-full w-full" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/70" />
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(90% 60% at 50% 100%, rgba(193,20,48,0.12), transparent 60%)",
+                "radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--blood) 12%, transparent), transparent 60%)",
             }}
           />
         </div>
         <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 sm:pb-24">
-          <p className="fade-up eyebrow mb-3">
-            Tonight at the club · {venue.city}
-          </p>
-          <h1 className="fade-up fade-up-1 gold-text font-display text-6xl leading-none sm:text-8xl">
-            {venue.name}
-          </h1>
+          <p className="fade-up eyebrow mb-3">{venue.home.eyebrow}</p>
+          {neon ? (
+            <>
+              <div className="fade-up fade-up-1">
+                <Wordmark size="xl" className="neon-flicker -ml-1 inline-block" />
+              </div>
+              <h1 className="fade-up fade-up-2 hero-headline mt-3 font-display text-5xl font-extrabold uppercase leading-[0.9] tracking-tight text-bone sm:text-7xl">
+                {venue.home.headline ?? venue.name}
+              </h1>
+            </>
+          ) : (
+            <h1 className="fade-up fade-up-1 gold-text font-display text-6xl leading-none sm:text-8xl">
+              {venue.home.headline ?? venue.name}
+            </h1>
+          )}
           <p className="fade-up fade-up-2 mt-4 max-w-xl text-sm leading-relaxed text-bone/80 sm:text-base">
-            {venue.description}
+            {venue.home.heroBody ?? venue.description}
           </p>
           <div className="fade-up fade-up-3 mt-8 flex flex-wrap gap-3">
-            <Button href="/girls" size="lg">
-              Meet the Girls
+            <Button href={primaryCta.href} size="lg">
+              {primaryCta.label}
             </Button>
             {venue.features.liveStream ? (
               <Button href="/live" variant="outline" size="lg">
@@ -81,9 +85,15 @@ export default function HomePage() {
                 Watch Live
               </Button>
             ) : null}
-            <Button href="/reserve" variant="ghost" size="lg">
-              Reserve a Table →
-            </Button>
+            {primaryCta.href !== "/reserve" ? (
+              <Button href="/reserve" variant="ghost" size="lg">
+                Reserve a Table →
+              </Button>
+            ) : (
+              <Button href="/girls" variant="ghost" size="lg">
+                {venue.labels.performers} →
+              </Button>
+            )}
           </div>
         </div>
       </section>
@@ -114,7 +124,22 @@ export default function HomePage() {
       </div>
 
       <div className="mx-auto max-w-6xl space-y-16 px-4 pt-14 sm:px-6">
+        {/* ---- WEEKLY LINEUP (clubs with recurring specials) ---- */}
+        {weeklySpecials.length ? (
+          <Reveal>
+            <WeeklySpecials specials={weeklySpecials} />
+          </Reveal>
+        ) : null}
+
+        {/* ---- DIGITAL STAGE PREVIEW ---- */}
+        {venue.home.livePreview ? (
+          <Reveal>
+            <LivePreview />
+          </Reveal>
+        ) : null}
+
         {/* ---- FEATURED EVENT ---- */}
+        <Reveal>
         <section>
           <SectionHeader
             eyebrow="Don't miss it"
@@ -132,9 +157,12 @@ export default function HomePage() {
                 className="aspect-[16/9] w-full transition duration-500 group-hover:scale-[1.02] md:aspect-auto md:min-h-72"
               />
               <div className="flex flex-col justify-center p-6 sm:p-10">
-                <Badge variant="tonight" className="w-fit">
-                  {formatEventDate(featuredEvent.date)} · Doors {featuredEvent.doors}
-                </Badge>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="tonight" className="w-fit">
+                    {formatEventDate(featuredEvent.date)} · Doors {featuredEvent.doors}
+                  </Badge>
+                  <DemoBadge kind="sample" />
+                </div>
                 <h3 className="mt-4 font-display text-3xl text-bone sm:text-4xl">
                   {featuredEvent.title}
                 </h3>
@@ -162,8 +190,10 @@ export default function HomePage() {
             </div>
           </Link>
         </section>
+        </Reveal>
 
         {/* ---- FEATURED ENTERTAINERS ---- */}
+        <Reveal>
         <section>
           <SectionHeader
             eyebrow={`${tonightCount} working tonight`}
@@ -182,8 +212,10 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+        </Reveal>
 
         {/* ---- MODULES ---- */}
+        <Reveal>
         <section>
           <SectionHeader eyebrow="The full experience" title="Everything Inside" />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
@@ -193,7 +225,7 @@ export default function HomePage() {
                 <Link
                   key={m.href}
                   href={m.href}
-                  className="glass group relative overflow-hidden rounded-3xl p-5 transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_rgba(212,169,78,0.1)] sm:p-6"
+                  className="glass group relative overflow-hidden rounded-3xl p-5 transition duration-300 hover:border-gold/40 hover:shadow-[0_8px_40px_color-mix(in_srgb,var(--gold)_10%,transparent)] sm:p-6"
                 >
                   <div
                     className="absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-20 blur-2xl transition group-hover:opacity-40"
@@ -212,8 +244,10 @@ export default function HomePage() {
               ))}
           </div>
         </section>
+        </Reveal>
 
         {/* ---- UPCOMING EVENTS ---- */}
+        <Reveal>
         <section>
           <SectionHeader
             eyebrow="Plan your week"
@@ -226,24 +260,25 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+        </Reveal>
 
         {/* ---- RESERVE BANNER ---- */}
+        <Reveal>
         <section className="glass relative overflow-hidden rounded-3xl p-8 text-center sm:p-14">
           <div
             className="absolute inset-0 opacity-60"
             style={{
               background:
-                "radial-gradient(70% 100% at 50% 0%, rgba(212,169,78,0.14), transparent 70%)",
+                "radial-gradient(70% 100% at 50% 0%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 70%)",
             }}
           />
           <div className="relative">
-            <p className="eyebrow mb-2">The best seat in the house</p>
+            <p className="eyebrow mb-2">{venue.home.reserveBanner.eyebrow}</p>
             <h2 className="gold-text font-display text-3xl sm:text-5xl">
-              Reserve Your Table Tonight
+              {venue.home.reserveBanner.title}
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm text-muted">
-              Stage-side sections, bottle packages, and a host who knows your
-              name. Walk past the line every time.
+              {venue.home.reserveBanner.body}
             </p>
             <div className="mt-7 flex justify-center">
               <Button href="/reserve" size="lg">
@@ -252,6 +287,14 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        </Reveal>
+
+        {/* ---- VISIT ---- */}
+        {venue.home.visitBlock ? (
+          <Reveal>
+            <VisitBlock />
+          </Reveal>
+        ) : null}
       </div>
     </div>
   );

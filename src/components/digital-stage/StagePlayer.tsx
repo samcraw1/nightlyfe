@@ -147,6 +147,7 @@ export default function StagePlayer({ playbackUrl, simulated, stageLive, streamS
           <video ref={videoRef} playsInline muted className="h-full w-full object-contain" />
         ) : (
           <MockImage hue={hue} className="drift h-full w-full" dim={!stageLive}>
+            {stageLive ? <div className="stage-lights" aria-hidden /> : null}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center">
               <span className="rounded-full border border-gold/40 bg-black/50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-gold backdrop-blur">
                 {simulated ? "Simulated stream · demo mode" : "No playback URL configured"}
@@ -164,7 +165,7 @@ export default function StagePlayer({ playbackUrl, simulated, stageLive, streamS
             <Badge variant="muted">Offline</Badge>
           )}
           {simulated ? (
-            <span className="rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-bone/80 backdrop-blur">Demo</span>
+            <span className="rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-bone/80 backdrop-blur">Simulated · Demo</span>
           ) : null}
         </div>
 

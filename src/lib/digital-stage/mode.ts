@@ -1,4 +1,5 @@
 import "server-only";
+import { venue } from "@/config/venue";
 import type { StageCapabilities, StageMode } from "./types";
 
 /**
@@ -11,7 +12,8 @@ import type { StageCapabilities, StageMode } from "./types";
  *               status checks and stream-key reveal need AWS credentials).
  */
 
-export const DEFAULT_VENUE_SLUG = process.env.NEXT_PUBLIC_DEFAULT_VENUE_SLUG || "onyx";
+/** Defaults to the active club, so a tenant build only ever serves its own stage. */
+export const DEFAULT_VENUE_SLUG = process.env.NEXT_PUBLIC_DEFAULT_VENUE_SLUG || venue.slug;
 
 export function getSupabaseConfig(): { url: string; anonKey: string } | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

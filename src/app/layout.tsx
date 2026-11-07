@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Manrope } from "next/font/google";
 import "./globals.css";
-import { venue, venueCssVars } from "@/config/venue";
+import { creditsEnabled, venue, venueCssVars } from "@/config/venue";
+import { fontPreset } from "@/config/fonts";
+import DemoRibbon from "@/components/layout/DemoRibbon";
 import { AppProvider } from "@/lib/store";
 import Navbar from "@/components/layout/Navbar";
 import BottomNav from "@/components/layout/BottomNav";
@@ -9,16 +10,7 @@ import Footer from "@/components/layout/Footer";
 import SWRegister from "@/components/layout/SWRegister";
 import BuyCreditsModal from "@/components/messages/BuyCreditsModal";
 
-const bodoni = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-bodoni",
-  style: ["normal", "italic"],
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-});
+const fonts = fontPreset(venue.theme.fonts);
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +19,6 @@ export const metadata: Metadata = {
   },
   description: venue.description,
   applicationName: venue.name,
-  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -48,17 +39,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodoni.variable} ${manrope.variable}`}
-      style={venueCssVars() as React.CSSProperties}
+      className={fonts.className}
+      data-style={venue.theme.style}
+      data-club={venue.slug}
+      data-ribbon={venue.demo.ribbon ? "" : undefined}
+      style={{ ...venueCssVars(), ...fonts.vars } as React.CSSProperties}
     >
       <body className="antialiased">
         <AppProvider>
           <SWRegister />
+          <DemoRibbon />
           <Navbar />
-          <main className="min-h-screen pt-16">{children}</main>
+          <main className="site-main min-h-screen pt-16">{children}</main>
           <Footer />
           <BottomNav />
-          <BuyCreditsModal />
+          {creditsEnabled ? <BuyCreditsModal /> : null}
         </AppProvider>
       </body>
     </html>

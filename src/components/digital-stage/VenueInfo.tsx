@@ -9,11 +9,15 @@ interface VenueInfoProps {
   visitNote: string;
   hours: { days: string; open: string; close: string }[];
   phone: string;
+  /** Shown when `hours` is empty (e.g. "Hours: confirm with management"). */
+  hoursNote?: string;
+  /** Overrides the address-based Google Maps link. */
+  directionsUrl?: string;
 }
 
 /** Where the club is, who's on tonight, and how to get a table. */
-export default function VenueInfo({ venue, featured, visitNote, hours, phone }: VenueInfoProps) {
-  const mapsHref = venue.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.address)}` : null;
+export default function VenueInfo({ venue, featured, visitNote, hours, phone, hoursNote, directionsUrl }: VenueInfoProps) {
+  const mapsHref = directionsUrl ? directionsUrl : venue.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.address)}` : null;
 
   return (
     <div className="glass rounded-3xl p-5 sm:p-6">
@@ -57,6 +61,7 @@ export default function VenueInfo({ venue, featured, visitNote, hours, phone }: 
       <div className="mt-5 grid gap-4 border-t border-white/5 pt-4 text-sm sm:grid-cols-2">
         <div>
           <p className="eyebrow mb-2">Hours</p>
+          {hours.length === 0 && hoursNote ? <p className="text-bone/70">{hoursNote}</p> : null}
           <ul className="space-y-1 text-bone/80">
             {hours.map((h) => (
               <li key={h.days} className="flex justify-between gap-4">

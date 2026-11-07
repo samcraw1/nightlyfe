@@ -129,7 +129,7 @@ export interface TicketOrder {
   createdAt: string;
 }
 
-export type MenuCategory = "Wings" | "Burgers" | "Entrees" | "Sides" | "Drinks";
+export type MenuCategory = "Wings" | "Burgers" | "Entrees" | "Sides" | "Drinks" | "Hookah";
 
 /** Portion option for a menu item — overrides the base price when chosen. */
 export interface MenuItemSize {

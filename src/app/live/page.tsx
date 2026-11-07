@@ -45,7 +45,7 @@ export default async function LivePage() {
         title={`Live from ${snapshot.venue.name}`}
         description="One stage, every performer. Watch who's on right now, see who's up next, and grab a table before you head out."
       />
-      <DigitalStage initial={snapshot} events={upcoming} visitNote={venue.digitalStage.visitNote} hours={venue.hours} phone={venue.phone} />
+      <DigitalStage initial={snapshot} events={upcoming} visitNote={venue.digitalStage.visitNote} hours={venue.hours} phone={venue.phone} hoursNote={venue.hoursNote} directionsUrl={venue.directionsUrl} />
     </div>
   );
 }

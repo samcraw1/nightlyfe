@@ -1,19 +1,23 @@
 import { venue } from "@/config/venue";
 import MockImage from "@/components/ui/MockImage";
 import Button from "@/components/ui/Button";
+import { entertainers } from "@/data/entertainers";
+
+/** Talent booking only makes sense when the roster has bookable models / DJs. */
+const hasTalent = entertainers.some((e) => e.type === "model" || e.type === "dj");
 
 
 export default function BookingsPage() {
     return (
       <section className="relative -mt-16 flex min-h-[92svh] items-end overflow-hidden pt-16">
             <div className="absolute inset-0">
-              <MockImage hue={40} className="drift h-full w-full" />
+              <MockImage hue={venue.theme.heroHue} className="drift h-full w-full" />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/70" />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(90% 60% at 50% 100%, rgba(193,20,48,0.12), transparent 60%)",
+                    "radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--blood) 12%, transparent), transparent 60%)",
                 }}
               />
             </div>
@@ -25,9 +29,11 @@ export default function BookingsPage() {
                 <Button href="/event" size="lg">
                   Event Booking
                 </Button>
-                 <Button href="/talent" size="lg">
-                 Talent Booking
-                </Button>
+                {hasTalent ? (
+                  <Button href="/talent" size="lg">
+                    Talent Booking
+                  </Button>
+                ) : null}
               </div>
             </div>
           </section>

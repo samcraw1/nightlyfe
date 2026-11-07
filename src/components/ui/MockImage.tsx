@@ -33,7 +33,7 @@ export default function MockImage({
           `radial-gradient(120% 90% at 50% -10%, hsl(${hue} 55% 38% / 0.55), transparent 60%)`,
           `radial-gradient(80% 60% at 80% 100%, hsl(${(hue + 40) % 360} 60% 25% / 0.35), transparent 65%)`,
           `radial-gradient(60% 50% at 15% 85%, hsl(${(hue + 320) % 360} 50% 20% / 0.3), transparent 60%)`,
-          `linear-gradient(180deg, #16110d 0%, #0a0808 100%)`,
+          `linear-gradient(180deg, var(--ink-2) 0%, var(--ink) 100%)`,
         ].join(","),
       }}
     >

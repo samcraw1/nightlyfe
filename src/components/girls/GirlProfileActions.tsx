@@ -8,6 +8,7 @@ import { HeartIcon } from "@/components/layout/icons";
 import { TIP_AMOUNTS } from "@/data/messages";
 import { useApp } from "@/lib/store";
 import { newId } from "@/lib/format";
+import { venue } from "@/config/venue";
 
 /** Follow/favorite, message, and tip controls for a performer profile. */
 export default function GirlProfileActions({ girl }: { girl: Entertainer }) {
@@ -46,16 +47,22 @@ export default function GirlProfileActions({ girl }: { girl: Entertainer }) {
           <HeartIcon className="h-4 w-4" filled={fav} />
           {fav ? "Following" : "Follow"}
         </Button>
-        <Button href={`/messages/conv-${girl.id}`}>Message</Button>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setTipped(null);
-            setTipOpen(true);
-          }}
-        >
-          Tip
-        </Button>
+        {venue.features.messaging ? (
+          <>
+            <Button href={`/messages/conv-${girl.id}`}>Message</Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setTipped(null);
+                setTipOpen(true);
+              }}
+            >
+              Tip
+            </Button>
+          </>
+        ) : (
+          <Button href="/reserve">Reserve a Table</Button>
+        )}
       </div>
 
       <Modal

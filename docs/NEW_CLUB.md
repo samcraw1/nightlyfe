@@ -8,6 +8,7 @@ src/clubs/
   onyx/               ← reference template club (default)
   pinups-atl/         ← Pin Ups Atlanta concept demo ("neon" style)
   vivid-atl/          ← Vivide Atlanta concept demo ("cinematic" style)
+  pinkhouse-memphis/  ← Pinkhouse Memphis concept demo ("pinkhouse" style, one-page home)
     index.ts          ← identity, contact, colors, fonts, copy, nav, feature flags
     content/*.ts      ← roster, events, weekly specials, menu, shop, jobs, VIP tables
 ```
@@ -18,6 +19,8 @@ src/clubs/
 2. **Brand it.**
    - `colors`: `gold` is the primary accent, `accent2` the secondary, `blood` the live/alert color.
    - `theme.style`: `"classic"` (serif, gold), `"neon"` (glow wordmark, light-show hero, scroll reveals), or `"cinematic"` (monochrome luxury: monogram + wide-tracked wordmark, chrome accents, slow camera-move hero).
+   - `"pinkhouse"`: black + hot pink luxury with a neon script wordmark and photo-led sections. Pair it with `home.layout: "pinkhouse"` for the single-scroll home (hero, experience, VIP request, entertainers, events, live concept, locations, contact).
+   - Optional: `locations` (multi-city cards), `seo` (OG image, keywords, `noindex` for pitch builds), `demo.hidePrices` (every price reads "TBA").
    - Optional layout variations: `home.layout: "cinematic"` (full-screen cinematic home page), `nav.style: "overlay"` (transparent nav with a full-screen menu).
    - Optional content: `instagram` (feed preview + follow CTA), `vip` (the club's real VIP phone/promoter line), `highlights` (signature offerings tiles).
    - `theme.fonts`: a preset from `src/config/fonts.ts`. Add a new preset there if needed; next/font requires static declarations.

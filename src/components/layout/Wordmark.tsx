@@ -40,6 +40,20 @@ export default function Wordmark({
     );
   }
 
+  if (style === "pinkhouse") {
+    const ph = {
+      md: { script: "text-[1.75rem]", sub: "text-[7px] tracking-[0.55em]" },
+      lg: { script: "text-5xl", sub: "text-[10px] tracking-[0.6em]" },
+      xl: { script: "text-7xl sm:text-9xl", sub: "text-xs sm:text-sm tracking-[0.8em]" },
+    }[size];
+    return (
+      <span className={`inline-flex flex-col items-center leading-none ${className}`}>
+        <span className={`ph-wordmark font-script whitespace-nowrap ${ph.script}`}>{wordmark}</span>
+        <span className={`-mt-0.5 pl-[0.6em] font-sans font-semibold uppercase text-bone/85 ${ph.sub}`}>{venue.city.split(",")[0]}</span>
+      </span>
+    );
+  }
+
   if (style === "neon") {
     return (
       <span className={`neon-wordmark font-script whitespace-nowrap leading-none ${sizes[size]} ${className}`}>

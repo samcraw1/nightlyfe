@@ -73,15 +73,17 @@ export interface ThemeColors {
 }
 
 /** Font sets loaded in `src/config/fonts.ts`. */
-export type FontPreset = "classic" | "neon-pinup" | "vivide";
+export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse";
 
 /**
  * Visual style. "classic" is the original gold/serif look; "neon" adds glow,
  * neon wordmark, an animated light-show hero, and scroll reveals.
  * "cinematic" is a monochrome luxury look: wide-tracked caps, chrome/foil
  * accents, slow camera-move hero plates, and scroll reveals.
+ * "pinkhouse" is black + hot pink luxury: script neon wordmark, editorial
+ * serif headlines, silver hairlines, photo-led sections.
  */
-export type ThemeStyle = "classic" | "neon" | "cinematic";
+export type ThemeStyle = "classic" | "neon" | "cinematic" | "pinkhouse";
 
 export interface WeeklySpecial {
   id: string;
@@ -108,6 +110,32 @@ export interface DemoSettings {
   sampleContent: boolean;
   /** Line shown on booking / checkout confirmations. */
   transactionNote?: string;
+  /** Show "TBA" instead of any price (for clubs with no verified pricing). */
+  hidePrices?: boolean;
+}
+
+/** One city in a multi-location brand. The first `primary` entry is this site's focus. */
+export interface ClubLocation {
+  slug: string;
+  name: string;
+  city: string;
+  status: "open" | "coming-soon";
+  /** Short status line, e.g. "Established location". */
+  statusLabel: string;
+  /** Only when verified. */
+  address?: string;
+  instagram?: { handle: string; url: string };
+  /** Photo under /public. */
+  image?: string;
+  primary?: boolean;
+}
+
+export interface SeoConfig {
+  /** Absolute or root-relative Open Graph image. */
+  ogImage?: string;
+  keywords?: string[];
+  /** Keep pitch builds out of search indexes. */
+  noindex?: boolean;
 }
 
 export interface PageCopy {
@@ -159,7 +187,7 @@ export interface VenueConfig {
   };
   home: {
     /** "cinematic" swaps in the full-screen cinematic home page. Default "standard". */
-    layout?: "standard" | "cinematic";
+    layout?: "standard" | "cinematic" | "pinkhouse";
     eyebrow: string;
     /** Big hero line. Defaults to the venue name. */
     headline?: string;
@@ -185,6 +213,9 @@ export interface VenueConfig {
   vip?: { phone?: string; promoter?: string; promoterUrl?: string; note?: string };
   /** Signature offerings, e.g. the club's Instagram story highlights. */
   highlights?: { title: string; blurb: string; hue: number; href?: string }[];
+  /** Brand locations (multi-city clubs). */
+  locations?: ClubLocation[];
+  seo?: SeoConfig;
   digitalStage: DigitalStageConfig;
   eventsBooking: {
     description: string;

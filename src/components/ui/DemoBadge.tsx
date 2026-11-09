@@ -7,14 +7,17 @@ import Badge from "./Badge";
  */
 export default function DemoBadge({
   kind,
+  label: labelOverride,
   className = "",
 }: {
   kind: "performer" | "sample" | "simulated";
+  /** Custom wording, e.g. "Placeholder profile" or "Demo event". */
+  label?: string;
   className?: string;
 }) {
   const on = kind === "performer" ? venue.demo.fictionalPerformers : venue.demo.sampleContent;
   if (!on) return null;
-  const label = kind === "performer" ? "Demo profile" : kind === "simulated" ? "Simulated" : "Sample";
+  const label = labelOverride ?? (kind === "performer" ? "Demo profile" : kind === "simulated" ? "Simulated" : "Sample");
   return (
     <Badge variant="demo" className={className}>
       {label}

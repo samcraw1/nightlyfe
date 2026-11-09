@@ -13,12 +13,28 @@ import BuyCreditsModal from "@/components/messages/BuyCreditsModal";
 const fonts = fontPreset(venue.theme.fonts);
 
 export const metadata: Metadata = {
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: {
     default: `${venue.name} — ${venue.tagline}`,
     template: `%s — ${venue.name}`,
   },
   description: venue.description,
   applicationName: venue.name,
+  keywords: venue.seo?.keywords,
+  robots: venue.seo?.noindex ? { index: false, follow: false } : undefined,
+  openGraph: {
+    title: `${venue.name} — ${venue.tagline}`,
+    description: venue.description,
+    siteName: venue.name,
+    type: "website",
+    images: venue.seo?.ogImage ? [{ url: venue.seo.ogImage }] : undefined,
+  },
+  twitter: {
+    card: venue.seo?.ogImage ? "summary_large_image" : "summary",
+    title: `${venue.name} — ${venue.tagline}`,
+    description: venue.description,
+    images: venue.seo?.ogImage ? [venue.seo.ogImage] : undefined,
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

@@ -30,6 +30,16 @@
       ],
       "port": 3200,
       "autoPort": true
+    },
+    {
+      "name": "pinkhouse",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:pinkhouse"
+      ],
+      "port": 3300,
+      "autoPort": true
     }
   ]
 }

@@ -1,4 +1,8 @@
+import { venue } from "@/config/venue";
+
+/** Clubs with no verified pricing set `demo.hidePrices`, so every price reads "TBA". */
 export function formatMoney(amount: number): string {
+  if (venue.demo.hidePrices) return "TBA";
   return amount % 1 === 0 ? `$${amount}` : `$${amount.toFixed(2)}`;
 }
 

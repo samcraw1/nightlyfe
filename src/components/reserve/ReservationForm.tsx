@@ -22,10 +22,10 @@ export default function ReservationForm() {
   const [done, setDone] = useState<Reservation | null>(null);
 
   const [date, setDate] = useState("");
-  const [time, setTime] = useState(arrivalTimes[1]);
+  const [time, setTime] = useState(arrivalTimes[1] ?? arrivalTimes[0]);
   const [partySize, setPartySize] = useState(4);
-  const [tableId, setTableId] = useState(tableOptions[1].id);
-  const [packageId, setPackageId] = useState(reservationPackages[1].id);
+  const [tableId, setTableId] = useState((tableOptions[1] ?? tableOptions[0]).id);
+  const [packageId, setPackageId] = useState((reservationPackages[1] ?? reservationPackages[0]).id);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");

@@ -75,7 +75,8 @@ export default async function EventPage({
               </div>
               <div>
                 <p className="font-display text-2xl text-gold">
-                  {formatMoney(event.vipFromPrice)}+
+                  {formatMoney(event.vipFromPrice)}
+                  {venue.demo.hidePrices ? "" : "+"}
                 </p>
                 <p className="text-[10px] uppercase tracking-wider text-muted">
                   VIP tables

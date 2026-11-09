@@ -1,4 +1,4 @@
-import { Big_Shoulders, Bodoni_Moda, Manrope, Outfit, Sora, Syncopate, Yellowtail } from "next/font/google";
+import { Big_Shoulders, Bodoni_Moda, Great_Vibes, Inter, Manrope, Outfit, Playfair_Display, Sora, Syncopate, Yellowtail } from "next/font/google";
 import type { FontPreset } from "@/clubs/types";
 
 /*
@@ -20,6 +20,10 @@ const yellowtail = Yellowtail({ subsets: ["latin"], weight: "400", variable: "--
 
 const syncopate = Syncopate({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-syncopate", preload: false });
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", preload: false });
+
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", style: ["normal", "italic"], preload: false });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", preload: false });
+const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400", variable: "--font-great-vibes", preload: false });
 
 interface PresetDef {
   className: string;
@@ -49,6 +53,14 @@ const presets: Record<FontPreset, PresetDef> = {
       "--club-display": "var(--font-sora)",
       "--club-sans": "var(--font-sora)",
       "--club-script": "var(--font-syncopate)",
+    },
+  },
+  pinkhouse: {
+    className: `${playfair.variable} ${inter.variable} ${greatVibes.variable}`,
+    vars: {
+      "--club-display": "var(--font-playfair)",
+      "--club-sans": "var(--font-inter)",
+      "--club-script": "var(--font-great-vibes)",
     },
   },
 };

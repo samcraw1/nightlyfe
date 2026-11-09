@@ -2,16 +2,22 @@
  * Inquiry submission: the single integration point for VIP and general
  * contact forms.
  *
- * DEMO BUILD: nothing leaves the browser. No network request is made and
- * nothing is stored. To go live, replace `submitInquiry` with a call to an
+ * DEMO BUILD: nothing leaves the browser. No network request is made. For
+ * multi-location ("network") clubs a copy is kept in this browser's
+ * localStorage only, so the /admin-demo inbox can show it. To go live, replace `submitInquiry` with a call to an
  * approved backend (e.g. a Route Handler that writes to the venue's
  * database and notifies the VIP host). Forms don't need to change.
  */
+
+import { venue } from "@/config/venue";
+import { recordInquiry } from "@/lib/network-store";
 
 export type InquiryKind = "vip" | "general";
 
 export interface VipInquiry {
   kind: "vip";
+  /** Network clubs: location slug the guest picked. */
+  club?: string;
   name: string;
   phone: string;
   email: string;
@@ -40,11 +46,23 @@ export async function submitInquiry(inquiry: Inquiry): Promise<InquiryResult> {
   // Simulated latency so the UI's sending state is visible in the demo.
   await new Promise((r) => setTimeout(r, 900));
   const prefix = inquiry.kind === "vip" ? "VIP" : "MSG";
-  return {
-    ok: true,
-    reference: `${prefix}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
-    demo: true,
-  };
+  const reference = `${prefix}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  if (inquiry.kind === "vip" && venue.features.network) {
+    recordInquiry({
+      id: reference,
+      club: inquiry.club ?? "",
+      name: inquiry.name,
+      email: inquiry.email,
+      phone: inquiry.phone,
+      date: inquiry.date,
+      partySize: inquiry.partySize,
+      requests: inquiry.requests,
+      status: "new",
+      receivedAt: new Date().toISOString(),
+      fromSite: true,
+    });
+  }
+  return { ok: true, reference, demo: true };
 }
 
 /** Basic client-side checks. Returns field → message for invalid fields. */
@@ -55,5 +73,6 @@ export function validateVip(v: Omit<VipInquiry, "kind">): Partial<Record<keyof V
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())) errors.email = "Enter a valid email.";
   if (!v.date) errors.date = "Pick a preferred date.";
   if (!v.partySize) errors.partySize = "Choose a party size.";
+  if (venue.features.network && !v.club) errors.club = "Choose a club.";
   return errors;
 }

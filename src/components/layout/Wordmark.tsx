@@ -54,6 +54,20 @@ export default function Wordmark({
     );
   }
 
+  if (style === "luxe") {
+    const lx = {
+      md: { main: "text-[1.05rem] tracking-[0.28em]", sub: "text-[7px] tracking-[0.6em]" },
+      lg: { main: "text-3xl tracking-[0.26em]", sub: "text-[10px] tracking-[0.6em]" },
+      xl: { main: "text-5xl sm:text-8xl tracking-[0.18em]", sub: "text-xs sm:text-sm tracking-[0.7em]" },
+    }[size];
+    return (
+      <span className={`inline-flex flex-col items-center leading-none ${className}`}>
+        <span className={`lx-gold-text font-script whitespace-nowrap font-semibold uppercase ${lx.main}`}>{wordmark}</span>
+        <span className={`mt-1 pl-[0.6em] font-sans font-medium uppercase text-bone/70 ${lx.sub}`}>{venue.theme.wordmarkSub ?? venue.shortName}</span>
+      </span>
+    );
+  }
+
   if (style === "neon") {
     return (
       <span className={`neon-wordmark font-script whitespace-nowrap leading-none ${sizes[size]} ${className}`}>

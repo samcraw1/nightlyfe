@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Bell, Eye, Radio, ShieldCheck, Smartphone, Volume2, VolumeX } from "lucide-react";
 import { entertainers } from "@/data/entertainers";
 import { venue } from "@/config/venue";
-import { FadeIn, SectionTitle } from "./motion";
+import { FadeIn, SectionTitle } from "@/components/ui/motion";
 
 /*
  * SIMULATED live preview. No video is streamed: the "player" is a photo

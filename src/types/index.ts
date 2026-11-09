@@ -5,6 +5,8 @@ export interface ScheduleEntry {
 
 export interface Entertainer {
   type?: "model" | "dj" | "performer"
+  /** Network clubs: the location this performer is affiliated with. */
+  locationSlug?: string;
   id: string;
   name: string;
   tagline: string;
@@ -41,6 +43,12 @@ export interface Entertainer {
 
 export interface ClubEvent {
   id: string;
+  /** Network clubs: which location hosts it (omit = all locations). */
+  locationSlug?: string;
+  /** Weekly / recurring promotion label, e.g. "Every Fri & Sat". */
+  recurring?: string;
+  /** Network clubs: "verified" items come from the club's own website. */
+  source?: "verified" | "demo";
   title: string;
   date: string; // ISO date
   doors: string;

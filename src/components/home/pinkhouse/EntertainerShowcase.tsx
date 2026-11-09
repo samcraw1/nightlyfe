@@ -9,7 +9,7 @@ import { applyLineup, useClubOverrides } from "@/lib/club-overrides";
 import MockImage from "@/components/ui/MockImage";
 import DemoBadge from "@/components/ui/DemoBadge";
 import type { Entertainer } from "@/types";
-import { EASE, FadeIn, SectionTitle } from "./motion";
+import { EASE, FadeIn, SectionTitle } from "@/components/ui/motion";
 
 /**
  * Entertainer showcase. Fully data-driven from the club's roster

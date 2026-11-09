@@ -5,7 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { ArrowDown, Crown, Sparkles } from "lucide-react";
 import { venue } from "@/config/venue";
 import { useClubOverrides } from "@/lib/club-overrides";
-import { EASE } from "./motion";
+import { EASE } from "@/components/ui/motion";
 
 /**
  * Full-screen hero: photo plate with slow parallax, sweeping pink light

@@ -9,6 +9,7 @@ import { CoinIcon, UserIcon } from "./icons";
 import OverlayNavbar from "./OverlayNavbar";
 
 const links: { href: string; label: string; feature?: keyof typeof venue.features }[] = [
+  { href: "/clubs", label: "Clubs", feature: "network" },
   { href: "/girls", label: venue.labels.performers },
   { href: "/live", label: "Live", feature: "liveStream" },
   { href: "/webcams", label: "Webcams", feature: "webcams" },

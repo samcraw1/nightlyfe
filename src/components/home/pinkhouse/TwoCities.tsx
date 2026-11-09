@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, MapPin } from "lucide-react";
 import { InstagramIcon } from "@/components/layout/icons";
 import { venue } from "@/config/venue";
-import { EASE, SectionTitle } from "./motion";
+import { EASE, SectionTitle } from "@/components/ui/motion";
 
 /**
  * Brand locations, rendered from `venue.locations`. Adding a city is one

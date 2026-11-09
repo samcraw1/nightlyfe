@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { CalendarHeart, Crown, Gem, Music2, Sparkles, type LucideIcon } from "lucide-react";
-import { EASE, FadeIn, SectionTitle } from "./motion";
+import { EASE, FadeIn, SectionTitle } from "@/components/ui/motion";
 
 interface Pillar {
   title: string;

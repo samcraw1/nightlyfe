@@ -7,7 +7,7 @@ import { ArrowUpRight, CalendarDays, Clock, Crown } from "lucide-react";
 import { events, formatEventDate } from "@/data/events";
 import { applyEvents, useClubOverrides } from "@/lib/club-overrides";
 import DemoBadge from "@/components/ui/DemoBadge";
-import { EASE, FadeIn, SectionTitle } from "./motion";
+import { EASE, FadeIn, SectionTitle } from "@/components/ui/motion";
 
 const FLYERS = [
   "/clubs/pinkhouse-memphis/truss.webp",

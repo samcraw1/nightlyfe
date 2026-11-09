@@ -40,6 +40,16 @@
       ],
       "port": 3300,
       "autoPort": true
+    },
+    {
+      "name": "pandoras",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:pandoras"
+      ],
+      "port": 3400,
+      "autoPort": true
     }
   ]
 }

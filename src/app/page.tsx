@@ -19,6 +19,7 @@ import LivePreview from "@/components/home/LivePreview";
 import VisitBlock from "@/components/home/VisitBlock";
 import CinematicHome from "@/components/home/cinematic/CinematicHome";
 import PinkhouseHome from "@/components/home/pinkhouse/PinkhouseHome";
+import PlayhouseHome from "@/components/home/playhouse/PlayhouseHome";
 import NetworkHome from "@/components/network/NetworkHome";
 
 const tonightCount = entertainers.filter((e) => e.workingTonight).length;
@@ -41,6 +42,7 @@ const primaryCta = venue.home.primaryCta ?? { label: "Meet the Girls", href: "/g
 
 export default function HomePage() {
   if (venue.home.layout === "pinkhouse") return <PinkhouseHome />;
+  if (venue.home.layout === "playhouse") return <PlayhouseHome />;
   if (venue.home.layout === "network") return <NetworkHome />;
   return venue.home.layout === "cinematic" ? <CinematicHome /> : <StandardHome />;
 }

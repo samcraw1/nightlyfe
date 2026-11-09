@@ -32,6 +32,7 @@ const items = venue.nav.mobile.map((key) => catalog[key]);
 export default function BottomNav() {
   const pathname = usePathname();
   const { hydrated } = useApp();
+  if (items.length === 0) return null;
   const unread = conversations.reduce((sum, c) => sum + c.unread, 0);
 
   return (

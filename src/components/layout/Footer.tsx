@@ -58,7 +58,7 @@ export default function Footer() {
                   </Link>
                 </li>
               ) : null}
-              {venue.features.network ? (
+              {venue.features.network || venue.features.venueDashboard ? (
                 <li>
                   <Link href="/admin-demo" className="text-bone/70 transition hover:text-gold">
                     Management dashboard (demo)

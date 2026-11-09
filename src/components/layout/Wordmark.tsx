@@ -68,6 +68,20 @@ export default function Wordmark({
     );
   }
 
+  if (style === "playhouse") {
+    const pl = {
+      md: { main: "text-[1.2rem] tracking-[0.3em]", sub: "text-[6.5px] tracking-[0.62em]" },
+      lg: { main: "text-4xl tracking-[0.26em]", sub: "text-[10px] tracking-[0.62em]" },
+      xl: { main: "text-6xl sm:text-8xl tracking-[0.2em]", sub: "text-xs sm:text-sm tracking-[0.7em]" },
+    }[size];
+    return (
+      <span className={`inline-flex flex-col items-center leading-none ${className}`}>
+        <span className={`pl-gold-text font-script whitespace-nowrap pl-[0.3em] font-semibold uppercase ${pl.main}`}>{wordmark}</span>
+        <span className={`pl-violet-text mt-1 pl-[0.62em] font-sans font-bold uppercase ${pl.sub}`}>{venue.theme.wordmarkSub ?? venue.shortName}</span>
+      </span>
+    );
+  }
+
   if (style === "neon") {
     return (
       <span className={`neon-wordmark font-script whitespace-nowrap leading-none ${sizes[size]} ${className}`}>

@@ -10,6 +10,7 @@ src/clubs/
   vivid-atl/          ← Vivide Atlanta concept demo ("cinematic" style)
   pinkhouse-memphis/  ← Pinkhouse Memphis concept demo ("pinkhouse" style, one-page home)
   pandoras-dfw/       ← Pandora's Clubs concept demo ("luxe" style, multi-location network)
+  bibs-playhouse/     ← Bibs Playhouse concept demo ("playhouse" style, booking-led one-page site)
     index.ts          ← identity, contact, colors, fonts, copy, nav, feature flags
     content/*.ts      ← roster, events, weekly specials, menu, shop, jobs, VIP tables
 ```
@@ -26,6 +27,7 @@ src/clubs/
    - Optional content: `instagram` (feed preview + follow CTA), `vip` (the club's real VIP phone/promoter line), `highlights` (signature offerings tiles).
    - `theme.fonts`: a preset from `src/config/fonts.ts`. Add a new preset there if needed; next/font requires static declarations.
    - `theme.logoUrl`: drop a logo in `public/clubs/<slug>/` to replace the text wordmark.
+   - `"playhouse"`: black + royal purple light with metallic gold. Pair it with `home.layout: "playhouse"` and fill `content.playhouse` (experiences, booking categories, production, events, VIP, gallery, dashboard seed) for the booking-led one-page home. Set `features.venueDashboard: true` for the single-venue `/admin-demo` (bookings inbox, events, gallery, analytics), and `nav.links` / `nav.cta` to point the overlay nav at in-page anchors.
    - Multi-location brands: set `features.network: true`, `home.layout: "network"`, and list every club in `locations` (see `src/clubs/pandoras-dfw/content/locations.ts`). This enables `/clubs`, `/clubs/[slug]` (generated from the location records), the club filter on `/events`, and the `/admin-demo` management dashboard. Tag events and entertainers with `locationSlug`. Each location's `verification` ("official" / "listing" / "unconfirmed") drives the badges shown to visitors.
 3. **Choose modules** with `features` (live stream, webcams, messaging, kitchen, merch, parking, jobs, bookings, and the optional `adminPreview` demo dashboard at `/admin`). Disabled modules disappear from navigation and their routes show a "not available" notice.
 4. **Mark demo content.** For pitch builds set `demo.ribbon`, `demo.fictionalPerformers`, and `demo.sampleContent`. These add the unofficial-demo ribbon and "Demo profile" / "Sample" badges.

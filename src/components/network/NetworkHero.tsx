@@ -49,7 +49,7 @@ export default function NetworkHero() {
           initial={{ opacity: 0, letterSpacing: "0.5em", filter: "blur(10px)" }}
           animate={{ opacity: 1, letterSpacing: "0.08em", filter: "blur(0px)" }}
           transition={{ duration: 1.6, ease: EASE, delay: 0.1 }}
-          className="lx-gold-text max-w-full pl-[0.08em] font-script text-[2.05rem] font-semibold uppercase leading-tight min-[400px]:text-[2.4rem] sm:text-7xl lg:text-8xl"
+          className="lx-gold-text max-w-full pl-[0.08em] font-script text-[clamp(1.9rem,8.2vw,6rem)] font-semibold uppercase leading-tight"
         >
           {venue.home.headline}
         </motion.h1>

@@ -1,17 +1,56 @@
 import type { ReservationPackage, TableOption } from "@/types";
 
-/*
- * SAMPLE section options for the generic /reserve flow. "Sections available"
- * is promoted for Bibs nights; names and sizes here are placeholders and
- * `demo.hidePrices` renders every amount as "TBA".
- */
 export const tableOptions: TableOption[] = [
-  { id: "section", name: "Reserved Section", description: "A section for your group with a host.", minimumSpend: 0, seats: 8 },
-  { id: "celebration", name: "Celebration Section", description: "Birthdays and special occasions.", minimumSpend: 0, seats: 12 },
+  {
+    id: "standard",
+    name: "Standard Table",
+    description: "Reserved floor table for your group with dedicated cocktail service.",
+    minimumSpend: 150,
+    seats: 4,
+  },
+  {
+    id: "vip",
+    name: "VIP Section",
+    description: "Elevated section overlooking the main stage. Bottle service included, personal host.",
+    minimumSpend: 350,
+    seats: 6,
+  },
+  {
+    id: "premium",
+    name: "Premium Section",
+    description: "The best seats in the house — stage-side, private security, premium bottle menu.",
+    minimumSpend: 750,
+    seats: 10,
+  },
 ];
 
 export const reservationPackages: ReservationPackage[] = [
-  { id: "none", name: "Section Only", description: "Discuss extras with your host.", price: 0 },
+  {
+    id: "none",
+    name: "No Package",
+    description: "Table only — order from the menu when you arrive.",
+    price: 0,
+  },
+  {
+    id: "gold",
+    name: "Gold Package",
+    description: "1 premium bottle, mixers, and a wings platter for the table.",
+    price: 200,
+  },
+  {
+    id: "platinum",
+    name: "Platinum Package",
+    description: "2 premium bottles, champagne toast, full appetizer spread, sparklers on arrival.",
+    price: 450,
+  },
 ];
 
-export const arrivalTimes = ["TBA — confirmed by your host"];
+export const arrivalTimes = [
+  "9:00 PM",
+  "9:30 PM",
+  "10:00 PM",
+  "10:30 PM",
+  "11:00 PM",
+  "11:30 PM",
+  "12:00 AM",
+];

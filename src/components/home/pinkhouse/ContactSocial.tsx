@@ -5,7 +5,7 @@ import { ArrowUpRight, Check, Crown, Loader2, MapPin, Send } from "lucide-react"
 import { InstagramIcon } from "@/components/layout/icons";
 import { venue } from "@/config/venue";
 import { submitInquiry } from "@/lib/inquiries";
-import { FadeIn, SectionTitle } from "./motion";
+import { FadeIn, SectionTitle } from "@/components/ui/motion";
 
 const HANDLE_ROLES: Record<string, string> = {
   "@pinkhouse_memphis": "Memphis · official updates",

@@ -5,7 +5,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Crown, Loader2, Lock, Users, Wine } from "lucide-react";
 import { submitInquiry, validateVip, type VipInquiry } from "@/lib/inquiries";
-import { EASE, FadeIn, SectionTitle } from "./motion";
+import { EASE, FadeIn, SectionTitle } from "@/components/ui/motion";
 
 const PARTY_SIZES = ["2–4 guests", "5–8 guests", "9–12 guests", "13–20 guests", "20+ guests"];
 

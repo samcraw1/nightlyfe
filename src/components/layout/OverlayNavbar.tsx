@@ -51,6 +51,7 @@ export default function OverlayNavbar({ links }: { links: NavLink[] }) {
     { href: "/reserve", label: "VIP Reservations" },
     ...(venue.features.jobs ? [{ href: "/jobs", label: "Now Hiring" }] : []),
     ...(venue.features.adminPreview ? [{ href: "/admin", label: "Admin Preview" }] : []),
+    ...(venue.features.network ? [{ href: "/admin-demo", label: "Management Demo" }] : []),
   ];
 
   return (

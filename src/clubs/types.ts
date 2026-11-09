@@ -38,6 +38,12 @@ export interface VenueFeatures {
   bookings: boolean;
   /** Demo admin dashboard at /admin (content editing preview). Off when omitted. */
   adminPreview?: boolean;
+  /**
+   * Multi-location brand ("network") mode: /clubs, /clubs/[slug], the club
+   * filter on /events, and the /admin-demo multi-location dashboard. Built
+   * from `venue.locations`. Off when omitted.
+   */
+  network?: boolean;
 }
 
 export interface DigitalStageConfig {
@@ -73,7 +79,7 @@ export interface ThemeColors {
 }
 
 /** Font sets loaded in `src/config/fonts.ts`. */
-export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse";
+export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse" | "luxe";
 
 /**
  * Visual style. "classic" is the original gold/serif look; "neon" adds glow,
@@ -82,8 +88,10 @@ export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse";
  * accents, slow camera-move hero plates, and scroll reveals.
  * "pinkhouse" is black + hot pink luxury: script neon wordmark, editorial
  * serif headlines, silver hairlines, photo-led sections.
+ * "luxe" is black/charcoal hospitality luxury: gold foil, crimson accents,
+ * editorial serif headlines, per-location accent colors.
  */
-export type ThemeStyle = "classic" | "neon" | "cinematic" | "pinkhouse";
+export type ThemeStyle = "classic" | "neon" | "cinematic" | "pinkhouse" | "luxe";
 
 export interface WeeklySpecial {
   id: string;
@@ -128,6 +136,37 @@ export interface ClubLocation {
   /** Photo under /public. */
   image?: string;
   primary?: boolean;
+
+  /* ---- richer fields used by network-mode clubs (all optional) ---- */
+  /** One-line premium headline for the club's page. */
+  tagline?: string;
+  /** Short card copy. */
+  summary?: string;
+  /** Longer About copy, one string per paragraph. */
+  description?: string[];
+  /** Location accent color (hex), layered over the brand palette. */
+  accent?: string;
+  hours?: { days: string; open: string; close: string }[];
+  /** Shown instead of a table when `hours` is empty. */
+  hoursNote?: string;
+  phone?: string;
+  email?: string;
+  socials?: { label: string; href: string }[];
+  /** Google Maps search text; the map only renders when this is set. */
+  mapsQuery?: string;
+  amenities?: string[];
+  /** VIP package names as the club publishes them (no prices). */
+  vipPackages?: string[];
+  gallery?: string[];
+  /**
+   * Where the details came from: "official" = the club's own website,
+   * "listing" = public directory listings (flag "confirm with management"),
+   * "unconfirmed" = nothing reliable found (placeholders only).
+   */
+  verification?: "official" | "listing" | "unconfirmed";
+  sourceUrl?: string;
+  /** The club's own website. */
+  website?: string;
 }
 
 export interface SeoConfig {
@@ -168,6 +207,8 @@ export interface VenueConfig {
     fonts: FontPreset;
     /** Wordmark shown in the navbar/footer; `logoUrl` replaces it if set. */
     wordmark: string;
+    /** Small line under the wordmark ("luxe" / "pinkhouse" styles). */
+    wordmarkSub?: string;
     logoUrl?: string;
     /** Base hue for hero art and generic placeholders. */
     heroHue: number;
@@ -187,7 +228,7 @@ export interface VenueConfig {
   };
   home: {
     /** "cinematic" swaps in the full-screen cinematic home page. Default "standard". */
-    layout?: "standard" | "cinematic" | "pinkhouse";
+    layout?: "standard" | "cinematic" | "pinkhouse" | "network";
     eyebrow: string;
     /** Big hero line. Defaults to the venue name. */
     headline?: string;
@@ -223,8 +264,32 @@ export interface VenueConfig {
   demo: DemoSettings;
 }
 
+/** Demo data for the network-mode /admin-demo dashboard. */
+export interface NetworkDemoData {
+  /** Pre-seeded simulated VIP inquiries (fictional people). */
+  seedInquiries: {
+    id: string;
+    club: string;
+    name: string;
+    date: string;
+    partySize: string;
+    requests?: string;
+    status: "new" | "contacted" | "confirmed" | "declined";
+    receivedAt: string;
+  }[];
+  /** Fictional analytics numbers. */
+  analytics: {
+    visitors30d: number;
+    visitorsTrend: number[];
+    viewsByClub: Record<string, number>;
+    eventEngagement: { label: string; value: number }[];
+  };
+}
+
 export interface ClubContent {
   entertainers: Entertainer[];
+  /** Network clubs only: demo data for /admin-demo. */
+  network?: NetworkDemoData;
   events: ClubEvent[];
   weeklySpecials: WeeklySpecial[];
   menuCategories: MenuCategory[];

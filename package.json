@@ -7,10 +7,12 @@
     "dev:pinups": "NEXT_PUBLIC_CLUB=pinups-atl DIGITAL_STAGE_MODE=demo next dev",
     "dev:vivid": "NEXT_PUBLIC_CLUB=vivid-atl DIGITAL_STAGE_MODE=demo next dev",
     "dev:pinkhouse": "NEXT_PUBLIC_CLUB=pinkhouse-memphis DIGITAL_STAGE_MODE=demo next dev",
+    "dev:pandoras": "NEXT_PUBLIC_CLUB=pandoras-dfw DIGITAL_STAGE_MODE=demo next dev",
     "build": "next build",
     "build:pinups": "NEXT_PUBLIC_CLUB=pinups-atl DIGITAL_STAGE_MODE=demo next build",
     "build:vivid": "NEXT_PUBLIC_CLUB=vivid-atl DIGITAL_STAGE_MODE=demo next build",
     "build:pinkhouse": "NEXT_PUBLIC_CLUB=pinkhouse-memphis DIGITAL_STAGE_MODE=demo next build",
+    "build:pandoras": "NEXT_PUBLIC_CLUB=pandoras-dfw DIGITAL_STAGE_MODE=demo next build",
     "start": "next start",
     "lint": "eslint"
   },

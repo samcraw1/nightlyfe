@@ -1,188 +1,144 @@
 import type { ClubDefinition } from "../types";
-import type { ClubEvent } from "@/types";
-import { bookingOptions, experiences } from "./content/experiences";
-import { events as playhouseEvents } from "./content/events";
-import { gallery } from "./content/gallery";
-import { production, vip } from "./content/production";
-import { analytics, seedBookings } from "./content/dashboard";
+import { entertainers } from "./content/entertainers";
+import { events } from "./content/events";
+import { menuCategories, menuItems } from "./content/menu";
+import { products } from "./content/shop";
+import { jobRoles } from "./content/jobs";
 import { arrivalTimes, reservationPackages, tableOptions } from "./content/reserve";
-import { APRIL_POST, PROMOTER_INSTAGRAM, PROMOTER_THREADS } from "./content/sources";
+import { liveRooms } from "./content/liveRooms";
+import {
+  conversations,
+  creditPackages,
+  MESSAGE_COST,
+  seedMessages,
+  STARTING_CREDITS,
+  TIP_AMOUNTS,
+} from "./content/messages";
 
 /**
  * Bibs Playhouse (Little Rock, AR): INDEPENDENT WEBSITE CONCEPT. Not an
  * official Bibs Playhouse website, and not affiliated with or endorsed by
  * Bibs Playhouse or its promoters.
  *
- * Public facts (all from promoter Mike DaPromoter's public Threads posts,
- * viewed 2026-11-09; no venue website or venue social account was found):
- *   - Address: 8702 Hwy 365 S, Little Rock, AR 72206
- *   - "Bibs Playhouse", Apr 25 2026, 10 PM–4 AM, BYOB
- *   - "Scorpios After Dark", Sat Nov 7 2026, 10 PM–3 AM, "only at Bibs"
- *   - Promoted amenities: BYOB, live dancers, kitchen menu, sections
- *
- * PLACEHOLDERS (same convention as the ONYX template, fictional 555 number
- * and example.com email, labelled "Placeholder" in the UI): phone, email,
- * hours. Replace with the venue's real details once confirmed.
- *
- * NOT confirmed, and never shown as fact: private
- * events, music video / photoshoot production, venue rental, VIP packages,
- * prices. The UI labels those "Proposed offering" or "To be confirmed".
+ * A copy of the ONYX reference template (src/clubs/onyx) with Bibs branding.
+ * Entertainers, menu, merch, jobs, events, prices, phone and hours are the
+ * template's fictional placeholders. The address and social links come from
+ * promoter Mike DaPromoter's public posts (viewed 2026-11-09).
  */
 const bibs = {
   venue: {
     slug: "bibs-playhouse",
     name: "Bibs Playhouse",
     shortName: "Bibs",
-    tagline: "Where Entertainment Comes Alive",
-    city: "Little Rock, Arkansas",
+    tagline: "Little Rock After Dark",
+    city: "Little Rock",
     description:
-      "An elevated experience in nightlife, entertainment, and unforgettable moments. Little Rock, Arkansas.",
+      "Little Rock's premier late-night destination. World-class entertainers, VIP tables, a full kitchen, and the city's best sound — every night until 3AM.",
     address: "8702 Hwy 365 S, Little Rock, AR 72206",
-    // Placeholders (fictional 555 number, example.com email): confirm with management.
     phone: "(501) 555-0142",
-    email: "bookings@example.com",
     hours: [
-      { days: "Thu", open: "9PM", close: "2AM" },
-      { days: "Fri – Sat", open: "10PM", close: "4AM" },
-      { days: "Sun", open: "8PM", close: "2AM" },
+      { days: "Mon – Thu", open: "8PM", close: "3AM" },
+      { days: "Fri – Sat", open: "7PM", close: "4AM" },
+      { days: "Sun", open: "9PM", close: "2AM" },
     ],
-    hoursNote: "",
     socialLinks: [
-      { label: "Threads · @mike_da_promoter", href: PROMOTER_THREADS },
-      { label: "Instagram · @mike_da_promoter", href: PROMOTER_INSTAGRAM },
+      { label: "Threads", href: "https://www.threads.com/@mike_da_promoter" },
+      { label: "Instagram", href: "https://www.instagram.com/mike_da_promoter/" },
     ],
-    directionsUrl: "https://www.google.com/maps/search/?api=1&query=8702+Hwy+365+S+Little+Rock+AR+72206",
     colors: {
       ink: "#080808",
       ink2: "#171717",
       ink3: "#211d26",
       bone: "#f5f3f8",
       muted: "#a7a2b0",
-      // metallic gold primary (buttons, rules), royal purple secondary (light)
       gold: "#d4af37",
       goldBright: "#f1d77a",
       goldDeep: "#8c6d1c",
-      blood: "#e0245e",
+      blood: "#c11430",
       accent2: "#6a0dad",
     },
     theme: {
-      style: "playhouse",
-      fonts: "playhouse",
-      wordmark: "Bibs",
-      wordmarkSub: "Playhouse",
+      style: "classic",
+      fonts: "classic",
+      wordmark: "BIBS",
       heroHue: 275,
     },
-    labels: { performers: "Entertainment", performersShort: "Talent", bookings: "Bookings" },
-    nav: {
-      mobile: [],
-      style: "overlay",
-      links: [
-        { href: "/#experience", label: "Experience" },
-        { href: "/#production", label: "Production" },
-        { href: "/#events", label: "Events" },
-        { href: "/#vip", label: "VIP" },
-        { href: "/#gallery", label: "Gallery" },
-        { href: "/#contact", label: "Contact" },
-      ],
-      cta: { label: "Book", href: "/#book" },
-    },
+    labels: { performers: "The Girls", performersShort: "Girls" },
+    nav: { mobile: ["home", "performers", "live", "messages", "account"] },
     home: {
-      layout: "playhouse",
-      eyebrow: "Little Rock, Arkansas",
-      headline: "BIBS PLAYHOUSE",
-      heroBody: "An elevated experience in nightlife, entertainment, and unforgettable moments.",
-      primaryCta: { label: "Explore the Experience", href: "#experience" },
+      eyebrow: "Tonight at the club · Little Rock",
       livePreview: false,
       reserveBanner: {
-        eyebrow: "Bookings",
-        title: "Booking Inquiries",
-        body: "Demo flow. No booking is made and nothing is sent.",
+        eyebrow: "The best seat in the house",
+        title: "Reserve Your Table Tonight",
+        body: "Stage-side sections, bottle packages, and a host who knows your name. Walk past the line every time.",
       },
-      modules: [],
+      modules: [
+        { href: "/girls", title: "Meet the Girls", blurb: "The full roster — see who's working tonight.", hue: 300 },
+        { href: "/live", title: "Watch Live", blurb: "The main stage stream, live from the floor.", hue: 285, feature: "liveStream" },
+        { href: "/webcams", title: "Webcams", blurb: "Your favorite entertainers, streaming live.", hue: 270, feature: "webcams" },
+        { href: "/messages", title: "Messages", blurb: "Talk directly with your favorite entertainers.", hue: 255, feature: "messaging" },
+        { href: "/reserve", title: "Reserve a Table", blurb: "VIP sections, bottle packages, stage-side seats.", hue: 45 },
+        { href: "/events", title: "Events & Parking", blurb: "Tickets, guest DJs, and pre-paid parking.", hue: 280 },
+        { href: "/kitchen", title: "The Kitchen", blurb: "Lemon pepper wet until 2:30AM. Enough said.", hue: 30, feature: "kitchen" },
+        { href: "/jobs", title: "Join the Team", blurb: "Entertainers, bar, floor, kitchen, security.", hue: 265, feature: "jobs" },
+        { href: "/shop", title: "Shop Merch", blurb: "Wear the crest. Tees, hats, and hoodies.", hue: 45, feature: "merch" },
+      ],
     },
     features: {
-      liveStream: false,
-      webcams: false,
-      messaging: false,
-      kitchen: false,
-      merch: false,
-      parking: false,
-      jobs: false,
-      bookings: false,
-      venueDashboard: true,
+      liveStream: true,
+      webcams: true,
+      messaging: true,
+      kitchen: true,
+      merch: true,
+      parking: true,
+      jobs: true,
+      bookings: true,
     },
-    instagram: { handle: "mike_da_promoter", url: PROMOTER_INSTAGRAM },
     seo: {
       ogImage: "/clubs/bibs-playhouse/og.jpg",
-      keywords: ["Bibs Playhouse", "Little Rock nightlife", "Little Rock event venue", "music video location Little Rock", "photoshoot venue Arkansas"],
+      keywords: ["Bibs Playhouse", "Little Rock nightlife", "Little Rock club"],
       noindex: true,
     },
     digitalStage: {
       ageRestriction: 21,
-      visitNote: "Demonstration only. Bibs Playhouse does not currently offer livestreaming.",
+      visitNote: "Parking on site off Hwy 365. Dress code enforced. VIP tables include priority entry.",
+      demo: { openingOrder: ["goldie", "sapphire"], noConsentId: "raven" },
     },
     eventsBooking: {
-      description: "Demo request form. Nothing is sent to the venue.",
+      description:
+        "Book your next event at Bibs Playhouse. World-class entertainers, VIP tables, and a full kitchen for an unforgettable experience.",
     },
     demo: {
       ribbon: true,
       ribbonText: "Independent Website Concept — Not an Official Bibs Playhouse Website",
       ribbonTextShort: "Independent concept · Not official",
       footerNote:
-        "Independent website concept — not an official Bibs Playhouse website and not affiliated with or endorsed by Bibs Playhouse. The address is from public promoter posts; phone, email and hours are placeholders; services marked “Proposed” are concepts. Sample events and dashboard data are fictional. No bookings or payments are processed. Photos: Unsplash stand-ins.",
-      fictionalPerformers: true,
-      sampleContent: true,
-      hidePrices: true,
-      transactionNote: "Demo only. No booking was made and nothing was sent.",
+        "21+ · Valid ID required · Independent concept, not affiliated with Bibs Playhouse. All people, prices and content are fictional placeholders.",
+      fictionalPerformers: false,
+      sampleContent: false,
     },
   },
   content: {
-    entertainers: [],
-    // Generic /events page: the venue's events in the shared shape.
-    events: playhouseEvents
-      .filter((e) => e.date)
-      .map(
-        (e): ClubEvent => ({
-          id: e.id,
-          title: e.title,
-          date: e.date!,
-          doors: e.time,
-          description: e.description,
-          source: e.source === "verified" ? "verified" : "demo",
-          gaPrice: 0,
-          vipFromPrice: 0,
-          parkingPrice: 0,
-          featured: !!e.featured,
-          hue: 275,
-        }),
-      ),
+    entertainers,
+    events,
     weeklySpecials: [],
-    menuCategories: [],
-    menuItems: [],
-    products: [],
-    jobRoles: [],
+    menuCategories,
+    menuItems,
+    products,
+    jobRoles,
     tableOptions,
     reservationPackages,
     arrivalTimes,
-    liveRooms: [],
-    mockDancerId: "",
-    conversations: [],
-    seedMessages: [],
-    messaging: { messageCost: 0, tipAmounts: [], startingCredits: 0, creditPackages: [] },
-    playhouse: {
-      facts: {
-        addressSourceLabel: "Address as posted by promoter @mike_da_promoter",
-        addressSourceUrl: APRIL_POST,
-        amenities: ["BYOB", "Live dancers", "Kitchen menu", "Sections available"],
-        mapsQuery: "8702 Hwy 365 S, Little Rock, AR 72206",
-      },
-      experiences,
-      bookingOptions,
-      production,
-      events: playhouseEvents,
-      vip,
-      gallery,
-      dashboard: { seedBookings, analytics },
+    liveRooms,
+    mockDancerId: "sapphire",
+    conversations,
+    seedMessages,
+    messaging: {
+      messageCost: MESSAGE_COST,
+      tipAmounts: TIP_AMOUNTS,
+      startingCredits: STARTING_CREDITS,
+      creditPackages,
     },
   },
 } satisfies ClubDefinition;

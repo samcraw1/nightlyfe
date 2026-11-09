@@ -34,7 +34,7 @@ function BarNavbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="group flex items-baseline gap-2">
           <Wordmark />
-          <span className={`hidden whitespace-nowrap text-[10px] uppercase tracking-[0.3em] text-muted transition group-hover:text-gold ${venue.theme.style === "neon" ? "xl:block" : "sm:block"}`}>
+          <span className={`hidden whitespace-nowrap text-[10px] uppercase tracking-[0.3em] text-muted transition group-hover:text-gold xl:block`}>
             {venue.tagline}
           </span>
         </Link>

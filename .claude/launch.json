@@ -50,6 +50,16 @@
       ],
       "port": 3400,
       "autoPort": true
+    },
+    {
+      "name": "bibs",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev:bibs"
+      ],
+      "port": 3500,
+      "autoPort": true
     }
   ]
 }

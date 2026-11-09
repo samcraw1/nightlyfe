@@ -44,6 +44,11 @@ export interface VenueFeatures {
    * from `venue.locations`. Off when omitted.
    */
   network?: boolean;
+  /**
+   * Single-venue management demo at /admin-demo (bookings inbox, events,
+   * gallery, analytics). Used by "playhouse" clubs. Off when omitted.
+   */
+  venueDashboard?: boolean;
 }
 
 export interface DigitalStageConfig {
@@ -79,7 +84,7 @@ export interface ThemeColors {
 }
 
 /** Font sets loaded in `src/config/fonts.ts`. */
-export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse" | "luxe";
+export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse" | "luxe" | "playhouse";
 
 /**
  * Visual style. "classic" is the original gold/serif look; "neon" adds glow,
@@ -90,8 +95,10 @@ export type FontPreset = "classic" | "neon-pinup" | "vivide" | "pinkhouse" | "lu
  * serif headlines, silver hairlines, photo-led sections.
  * "luxe" is black/charcoal hospitality luxury: gold foil, crimson accents,
  * editorial serif headlines, per-location accent colors.
+ * "playhouse" is black + royal purple neon with metallic gold: editorial
+ * serif display, purple light sweeps, gold hairlines, photo-led sections.
  */
-export type ThemeStyle = "classic" | "neon" | "cinematic" | "pinkhouse" | "luxe";
+export type ThemeStyle = "classic" | "neon" | "cinematic" | "pinkhouse" | "luxe" | "playhouse";
 
 export interface WeeklySpecial {
   id: string;
@@ -195,6 +202,8 @@ export interface VenueConfig {
   established?: string;
   address: string;
   phone: string;
+  /** Public contact email, when the club has one (or a demo placeholder). */
+  email?: string;
   /** Empty array plus `hoursNote` renders a placeholder instead of a table. */
   hours: { days: string; open: string; close: string }[];
   hoursNote?: string;
@@ -225,10 +234,14 @@ export interface VenueConfig {
     mobile: MobileNavKey[];
     /** "overlay" = transparent over the hero with a full-screen menu. Default "bar". */
     style?: "bar" | "overlay";
+    /** Overlay nav: replaces the default page links (e.g. in-page anchors for one-page sites). */
+    links?: { href: string; label: string }[];
+    /** Overlay nav: the pill button next to the menu. Defaults to VIP → /reserve. */
+    cta?: { label: string; href: string };
   };
   home: {
     /** "cinematic" swaps in the full-screen cinematic home page. Default "standard". */
-    layout?: "standard" | "cinematic" | "pinkhouse" | "network";
+    layout?: "standard" | "cinematic" | "pinkhouse" | "network" | "playhouse";
     eyebrow: string;
     /** Big hero line. Defaults to the venue name. */
     headline?: string;
@@ -286,8 +299,122 @@ export interface NetworkDemoData {
   };
 }
 
+/* ---------------------------------------------------------------------
+ * "playhouse" layout content: an entertainment venue / booking-led site.
+ * Every item says how much of it is confirmed, so the UI can label it.
+ * ------------------------------------------------------------------- */
+
+/**
+ * "promoted" = appears in the venue's (or its promoter's) public posts.
+ * "proposed" = a concept offering, not confirmed by the business.
+ */
+export type OfferingStatus = "promoted" | "proposed";
+
+export type BookingCategory = "private-event" | "music-video" | "photoshoot" | "venue-rental" | "general";
+
+export interface PlayhouseExperience {
+  id: string;
+  title: string;
+  blurb: string;
+  image: string;
+  status: OfferingStatus;
+  /** Booking category the card's CTA preselects. */
+  bookingType?: BookingCategory;
+}
+
+export type GalleryCategory = "venue" | "events" | "productions" | "vip";
+
+export interface GalleryItem {
+  id: string;
+  src: string;
+  alt: string;
+  category: GalleryCategory;
+  /** Intrinsic size, for the masonry aspect ratio. */
+  w: number;
+  h: number;
+}
+
+export interface PlayhouseEvent {
+  id: string;
+  title: string;
+  /** ISO date; omit for weekly items. */
+  date?: string;
+  /** Display time, e.g. "10 PM – 4 AM". */
+  time: string;
+  /** e.g. "Every Friday" */
+  recurring?: string;
+  kind: "upcoming" | "weekly" | "promotion";
+  description: string;
+  tags?: string[];
+  image: string;
+  featured?: boolean;
+  /** "verified" items link `sourceUrl`; "sample" items are demo content. */
+  source: "verified" | "sample";
+  sourceLabel?: string;
+  sourceUrl?: string;
+  hidden?: boolean;
+}
+
+export interface PlayhouseBookingOption {
+  id: BookingCategory;
+  label: string;
+  blurb: string;
+  status: OfferingStatus;
+}
+
+export interface PlayhouseSimpleTile {
+  title: string;
+  blurb: string;
+  image?: string;
+}
+
+export interface PlayhouseBooking {
+  id: string;
+  category: BookingCategory;
+  name: string;
+  phone: string;
+  email: string;
+  date: string;
+  guests: string;
+  details: string;
+  requests?: string;
+  status: "new" | "contacted" | "confirmed" | "declined";
+  receivedAt: string;
+  fromSite?: boolean;
+}
+
+export interface PlayhouseContent {
+  /** Public facts and where they came from (shown in the contact section). */
+  facts: {
+    addressSourceLabel: string;
+    addressSourceUrl: string;
+    /** Amenities the venue/promoter has advertised. */
+    amenities: string[];
+    mapsQuery: string;
+  };
+  experiences: PlayhouseExperience[];
+  bookingOptions: PlayhouseBookingOption[];
+  production: { tiles: (PlayhouseSimpleTile & { image: string })[]; note: string };
+  events: PlayhouseEvent[];
+  vip: { tiles: PlayhouseSimpleTile[]; image: string };
+  gallery: GalleryItem[];
+  dashboard: {
+    seedBookings: PlayhouseBooking[];
+    analytics: {
+      visits30d: number;
+      visitsTrend: number[];
+      conversionRate: number;
+      popularServices: { label: string; value: number }[];
+      eventEngagement: { label: string; value: number }[];
+      trafficSources: { label: string; value: number }[];
+    };
+  };
+}
+
 export interface ClubContent {
   entertainers: Entertainer[];
+  /** "playhouse" layout clubs: home page + /admin-demo content. */
+  playhouse?: PlayhouseContent;
   /** Network clubs only: demo data for /admin-demo. */
   network?: NetworkDemoData;
   events: ClubEvent[];

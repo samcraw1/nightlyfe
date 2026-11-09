@@ -73,6 +73,14 @@ const presets: Record<FontPreset, PresetDef> = {
       "--club-script": "var(--font-cinzel)",
     },
   },
+  playhouse: {
+    className: `${bodoni.variable} ${manrope.variable} ${cinzel.variable}`,
+    vars: {
+      "--club-display": "var(--font-bodoni)",
+      "--club-sans": "var(--font-manrope)",
+      "--club-script": "var(--font-cinzel)",
+    },
+  },
 };
 
 export function fontPreset(name: FontPreset): PresetDef {

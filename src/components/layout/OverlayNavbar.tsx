@@ -44,14 +44,16 @@ export default function OverlayNavbar({ links }: { links: NavLink[] }) {
   }, [open]);
 
   const solid = scrolled || pathname !== "/" || open;
-  const visible = links.filter((l) => !l.feature || venue.features[l.feature]);
+  const custom = venue.nav.links;
+  const visible: NavLink[] = custom ?? links.filter((l) => !l.feature || venue.features[l.feature]);
+  const cta = venue.nav.cta ?? { label: "VIP", href: "/reserve" };
   const menu = [
     { href: "/", label: "Home" },
     ...visible,
-    { href: "/reserve", label: "VIP Reservations" },
+    ...(custom ? [] : [{ href: "/reserve", label: "VIP Reservations" }]),
     ...(venue.features.jobs ? [{ href: "/jobs", label: "Now Hiring" }] : []),
     ...(venue.features.adminPreview ? [{ href: "/admin", label: "Admin Preview" }] : []),
-    ...(venue.features.network ? [{ href: "/admin-demo", label: "Management Demo" }] : []),
+    ...(venue.features.network || venue.features.venueDashboard ? [{ href: "/admin-demo", label: "Management Demo" }] : []),
   ];
 
   return (
@@ -68,7 +70,7 @@ export default function OverlayNavbar({ links }: { links: NavLink[] }) {
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             {visible.map((l) => {
-              const active = pathname === l.href || pathname.startsWith(l.href + "/");
+              const active = !l.href.includes("#") && (pathname === l.href || pathname.startsWith(l.href + "/"));
               return (
                 <Link
                   key={l.href}
@@ -85,10 +87,10 @@ export default function OverlayNavbar({ links }: { links: NavLink[] }) {
 
           <div className="flex items-center gap-2">
             <Link
-              href="/reserve"
+              href={cta.href}
               className="font-wide hidden rounded-full border border-gold/50 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-gold transition hover:bg-gold hover:text-ink sm:block"
             >
-              VIP
+              {cta.label}
             </Link>
             <button
               onClick={() => {
@@ -123,7 +125,7 @@ export default function OverlayNavbar({ links }: { links: NavLink[] }) {
             <nav aria-label="Menu links">
               <ul className="space-y-1">
                 {menu.map((l, i) => {
-                  const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
+                  const active = l.href === "/" ? pathname === "/" : !l.href.includes("#") && pathname.startsWith(l.href);
                   return (
                     <li key={l.href + l.label} className="cine-menu-item" style={{ animationDelay: `${0.05 + i * 0.04}s` }}>
                       <Link

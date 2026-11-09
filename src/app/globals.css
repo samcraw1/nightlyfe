@@ -1070,3 +1070,165 @@ select.lx-field option {
 @media (prefers-reduced-motion: reduce) {
   [data-style="luxe"] .gold-text, .lx-gold-text { animation: none; }
 }
+
+/* =====================================================================
+ * PLAYHOUSE style — used by clubs with `theme.style: "playhouse"`.
+ * Deep black + royal purple neon light, metallic gold type and rules,
+ * editorial serif display, film grain. `--violet` is the secondary accent.
+ * ===================================================================== */
+
+[data-style="playhouse"] {
+  --line: rgba(255, 255, 255, 0.08);
+  --violet: var(--accent-2);
+  --violet-glow: color-mix(in srgb, var(--accent-2) 70%, #c084fc);
+}
+
+[data-style="playhouse"] body {
+  background:
+    radial-gradient(60% 40% at 85% -5%, color-mix(in srgb, var(--violet) 16%, transparent), transparent 70%),
+    radial-gradient(45% 35% at 0% 45%, color-mix(in srgb, var(--violet) 8%, transparent), transparent 70%),
+    var(--ink);
+}
+
+[data-style="playhouse"] .font-display {
+  font-family: var(--club-display), Didot, serif;
+  letter-spacing: -0.02em;
+}
+[data-style="playhouse"] .font-wide {
+  font-family: var(--club-sans), system-ui, sans-serif;
+}
+[data-style="playhouse"] .eyebrow {
+  font-family: var(--club-sans), sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+[data-style="playhouse"] .gold-text,
+.pl-gold-text {
+  background: linear-gradient(100deg, var(--gold-deep) 0%, var(--gold) 28%, #fff2c2 46%, var(--gold-bright) 60%, var(--gold) 78%, var(--gold-deep) 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 12s linear infinite;
+}
+.pl-violet-text {
+  color: color-mix(in srgb, var(--violet-glow) 85%, white);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--violet) 80%, transparent);
+}
+.pl-silver-text {
+  background: linear-gradient(100deg, #9b98a3 0%, #f6f4fa 35%, #c3c0cb 55%, #ffffff 70%, #9b98a3 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 14s linear infinite;
+}
+
+[data-style="playhouse"] .glass {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012) 55%);
+  border: 1px solid var(--line);
+}
+[data-style="playhouse"] .glass-strong {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--ink-2) 94%, transparent), color-mix(in srgb, var(--ink) 97%, transparent));
+  border: 1px solid var(--line);
+}
+[data-style="playhouse"] .hairline,
+.pl-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold) 70%, transparent), transparent);
+}
+
+[data-style="playhouse"] .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-style="playhouse"] .reveal[data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* primary buttons: metallic gold with a soft violet halo */
+[data-style="playhouse"] .bg-gradient-to-b.from-gold-bright,
+.pl-btn-gold {
+  background-image: linear-gradient(180deg, var(--gold-bright), var(--gold) 55%, var(--gold-deep));
+  color: #0b0710;
+  letter-spacing: 0.18em;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold-bright) 45%, transparent), 0 14px 44px -14px color-mix(in srgb, var(--violet) 90%, transparent);
+}
+
+/* violet neon edge for cards and panels */
+.pl-glow {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--violet-glow) 45%, transparent), 0 0 70px -14px color-mix(in srgb, var(--violet) 85%, transparent);
+}
+
+/* purple light sweeps */
+.pl-beam {
+  position: absolute;
+  top: -25%;
+  width: 36vmax;
+  height: 150%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--violet-glow) 38%, transparent), transparent);
+  filter: blur(22px);
+  mix-blend-mode: screen;
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+
+.pl-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+}
+
+/* form fields */
+.pl-field {
+  width: 100%;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 0.85rem 1rem;
+  font-size: 16px; /* no iOS zoom on focus */
+  color: var(--bone);
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pl-field::placeholder {
+  color: color-mix(in srgb, var(--bone) 35%, transparent);
+}
+.pl-field:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  background: color-mix(in srgb, var(--violet) 10%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--violet) 25%, transparent);
+}
+.pl-field[aria-invalid="true"] {
+  border-color: var(--blood);
+}
+.pl-field::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.6);
+}
+select.pl-field {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%);
+  background-position: calc(100% - 1.2rem) 1.25rem, calc(100% - 0.85rem) 1.25rem;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+select.pl-field option {
+  background: var(--ink-2);
+}
+
+/* anchor targets clear the fixed nav + ribbon */
+[data-style="playhouse"] section[id] {
+  scroll-margin-top: 7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-gold-text, .pl-silver-text, [data-style="playhouse"] .gold-text { animation: none; }
+}
